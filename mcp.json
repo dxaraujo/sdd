@@ -15,7 +15,7 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "mcp-elm@3.6.4"
+        "mcp-elm@3.6.7"
       ],
       "env": {
         "UV_SYSTEM_CERTS": "true"
