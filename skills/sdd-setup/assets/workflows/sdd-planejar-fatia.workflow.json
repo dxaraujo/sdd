@@ -1,0 +1,60 @@
+{
+  "name": "sdd-planejar-fatia",
+  "description": "sdd — pesquisa e plano de UMA fatia já iniciada pela sdd-desenvolver (situação iniciada na base, branch, status.md em planejando, [DEV] assumida), com análise independente, até o GATE do plano: a pessoa dispara na branch da fatia, no checkout principal; cada passo roda numa sessão nova. O último passo é com a pessoa: troca AFK → HITL sugerida quando o plano tem risco, GATE pela senioridade de quem implementa (Pleno escolhe), [APR] Aprovar plano para o Dev Sênior, push, horas e créditos da execução. Termina em implementando, aguardando-aprovacao-plano ou bloqueada, dizendo o próximo passo. Informe a fatia sempre do mesmo jeito (o id do backlog, ex.: FT-031): o estado da execução fica em .kiro/local/wf/<fatia como digitada>/.",
+  "inputs": {
+    "fatia": "string"
+  },
+  "steps": [
+    {
+      "type": "step",
+      "id": "conferir",
+      "agent": "sdd-revisor",
+      "prompt": "Fatia {{fatia}}. Leia o status.md da pasta de .kiro/specs/ cujo nome começa pelo id em minúsculas (ex.: ft-031-…), nesta branch. Sem a pasta, ou fase fora de pesquisando e planejando (o status.md nasce em pesquisando) → não grave nada e termine com send_message severity error: 'a fatia começa pela sdd-desenvolver (iniciada na base, branch, status.md e a [DEV] assumida); depois rode esta receita'. Senão grave .kiro/local/wf/{{fatia}}/plano.json com {\"resultado\": \"PENDENTE\", \"inicio\": \"<data e hora local agora, AAAA-MM-DDTHH:MM:SS>\"} (zera a execução anterior; o inicio é o --desde dos créditos no último passo). Não faça mais nada."
+    },
+    {
+      "type": "step",
+      "id": "pesquisa",
+      "agent": "sdd-pesquisador",
+      "prompt": "Fatia {{fatia}}. AUTONOMO=true. Siga a skill sdd-pesquisar e escreva o research.md da pasta da fatia (.kiro/specs/<id em minúsculas>-…), nesta branch. Sem perguntas; o que não achar vai para 'Não encontrado'. Bloqueio técnico: send_message severity error com o motivo."
+    },
+    {
+      "type": "step",
+      "id": "plano",
+      "agent": "sdd-codificador",
+      "prompt": "Fatia {{fatia}}. AUTONOMO=true. Siga a skill sdd-plano, Passos 2 e 3 (o research.md já existe). Não rode a análise nem o GATE. No status.md: fase planejando. Commite o plano (research.md, .config.kiro, requirements.md ou bugfix.md, design.md, tasks.md e status.md; mensagem no padrão de commit do sdd.md, texto 'registrar plano (rascunho)'), para que a análise seja de um plano que está no git. Lacuna de negócio ou divergência com o plano: registre a pergunta (ou Esperado / Encontrado / Por que importa) no status.md e termine com send_message severity warning trazendo-a — a execução pausa até a pessoa responder neste passo; com a resposta, registre a decisão, conclua e termine com severity success. Bloqueio técnico (build quebrado na base, ferramenta ou ambiente fora): send_message severity error com o motivo."
+    },
+    {
+      "type": "repeat",
+      "id": "analise",
+      "maxIterations": 2,
+      "onMaxIterations": "pause",
+      "stopCondition": {
+        "fileCheck": {
+          "path": ".kiro/local/wf/{{fatia}}/plano.json",
+          "jsonPath": "resultado",
+          "value": "OK"
+        }
+      },
+      "steps": [
+        {
+          "type": "step",
+          "id": "analisar",
+          "agent": "sdd-revisor",
+          "prompt": "Fatia {{fatia}}. Revise o plano pela rubrica L da skill sdd-revisar. Grave o analise-plano-<N>.md na pasta da fatia e, em .kiro/local/wf/{{fatia}}/plano.json, troque só o resultado para \"OK\" ou \"AJUSTAR\" (mantenha o inicio). Não conseguiu revisar (build quebrado sem relação com a fatia, ferramenta ou ambiente fora): send_message severity error com o motivo."
+        },
+        {
+          "type": "step",
+          "id": "ajustar",
+          "agent": "sdd-codificador",
+          "prompt": "Fatia {{fatia}}. AUTONOMO=true. Leia .kiro/local/wf/{{fatia}}/plano.json. AJUSTAR → corrija no plano só os achados do último analise-plano-<N>.md que são do plano; achado do PRD é lacuna de negócio. OK → não mexa no plano. No status.md, incremente \"revisão do plano\" em Rodadas (quem incrementa é este passo) e registre o resultado no Histórico. Commite o analise-plano-<N>.md com o status.md e o que corrigiu (mensagem no padrão de commit do sdd.md, texto 'registrar análise do plano <N>'). Lacuna de negócio ou divergência com o plano: registre a pergunta no status.md e termine com send_message severity warning trazendo-a — a execução pausa até a pessoa responder neste passo; com a resposta, registre a decisão, conclua e termine com severity success. Bloqueio técnico: send_message severity error com o motivo."
+        }
+      ]
+    },
+    {
+      "type": "step",
+      "id": "entregar_plano",
+      "agent": "sdd-codificador",
+      "prompt": "Fatia {{fatia}}. Este passo é com a pessoa (sem AUTONOMO): cada pergunta vai num send_message severity warning, e a execução pausa até ela responder neste passo. Leia .kiro/local/wf/{{fatia}}/plano.json. Resultado diferente de OK (duas rodadas sem OK) → fase bloqueada (de: planejando) com os achados abertos e a pergunta à pessoa; siga para os créditos. OK → o Passo 5 da skill sdd-plano inteiro: fatia AFK com risco (regra de negócio sensível, muitos cenários, integração externa, mudança de dado) → fase bloqueada (de: planejando), 'aguardando troca para HITL' com o risco, e diga que o P.O. decide a troca; senão o GATE pela senioridade de quem implementa (Responsável do status.md, equipe.json da base): Sênior → implementando ('plano do Sênior'); Pleno → pergunte se quer a aprovação de um Dev Sênior; Júnior, ou Pleno que pediu → pergunte qual Dev Sênior aprova e, com 'sim', a [APR] FT-<nnn> Aprovar plano (§8 de elm-sprint.md), fase aguardando-aprovacao-plano, commit, push da branch da fatia (o Kiro confirma) e conferência no remoto (git fetch; git rev-parse HEAD = git rev-parse origin/<branch>). Push recusado → entregue o comando pronto e espere a pessoa dizer que publicou. Depois, para todos os casos: horas na [DEV] (elm_horas → desconte → elm_lancar_horas, com 'sim'; lança, não conclui) e os créditos da execução — o script creditos.py da skill sdd-status com --desde = o inicio do plano.json: as sessões que ele lista desde então são os passos desta receita; com 'sim', uma linha por sessão na seção Créditos do status.md (Papel 'workflow planejar'). Commit do que faltar (mensagem no padrão de commit do sdd.md, texto 'registrar plano'); a árvore da fatia termina limpa. Termine com send_message severity success dizendo a fase e o próximo passo: implementando → 'rode sdd-entregar-fatia (AFK) ou sdd-implementar (HITL)'; aguardando-aprovacao-plano → 'o Dev Sênior <login> aprova pela sdd-revisar (Aprovação do plano)' — ou severity error se a fase é bloqueada, com o motivo e quem decide."
+    }
+  ]
+}

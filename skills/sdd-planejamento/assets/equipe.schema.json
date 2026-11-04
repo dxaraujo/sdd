@@ -1,0 +1,291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/dxaraujo/kiro/main/powers/sdd/skills/sdd-planejamento/assets/equipe.schema.json",
+  "title": "Equipe do sdd",
+  "description": "<produto>/equipe.json: projeto, duração da sprint, histórico de vazão e de horas e membros com a capacidade de trabalho, de revisão, de especificação e de Sustentação. Chaves em kebab-case; valores derivados (capacidade da sprint, totais) não são gravados, são calculados na hora.",
+  "type": "object",
+  "required": [
+    "atualizado",
+    "projeto",
+    "membros"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "atualizado": {
+      "$ref": "#/$defs/data"
+    },
+    "projeto": {
+      "type": "object",
+      "required": [
+        "nome",
+        "duracao-sprint-semanas",
+        "inicio",
+        "historico"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duracao-sprint-semanas": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "inicio": {
+          "$ref": "#/$defs/data",
+          "description": "Início da sprint 1."
+        },
+        "historico": {
+          "type": "array",
+          "description": "Uma entrada por sprint fechada, gravada na virada.",
+          "items": {
+            "type": "object",
+            "required": [
+              "sprint",
+              "fatias-concluidas"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "sprint": {
+                "type": "string",
+                "pattern": "^[^/]+/Sprint [0-9]{2,}$",
+                "description": "Chave da sprint <pai>/Sprint <nn> (2026/Sprint 03: a iteração pai do EWM e o número do arquivo sprints/<pai>/sprint-<nn>.md)."
+              },
+              "fatias-concluidas": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lead-time-medio-dias": {
+                "type": "number",
+                "minimum": 0
+              },
+              "horas-revisao": {
+                "type": "number",
+                "minimum": 0
+              },
+              "horas-lancadas": {
+                "type": "object",
+                "description": "Horas lançadas no EWM na sprint por tipo de tarefa ([DEV] entrega, [REV] revisao, [APR] aprovacao, [VER] verificacao, [ESP] especificacao, Sustentação — [ATD] [IMPL] [BD] [INF] [OPE] [EXT] — sustentacao); vem do relatorio de horas da virada (elm_horas da iteracao).",
+                "additionalProperties": false,
+                "properties": {
+                  "entrega": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "revisao": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "aprovacao": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "verificacao": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "especificacao": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "sustentacao": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Soma das tarefas de Sustentação de toda categoria (as fatias de Manutenção somam em entrega, revisao, aprovacao e verificacao)."
+                  }
+                }
+              },
+              "reserva-sustentacao": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Reserva da sprint para a Sustentação (toda categoria) e o retrabalho da sprint anterior (0.2 = 20% das horas da sprint do time)."
+              }
+            }
+          }
+        }
+      }
+    },
+    "membros": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/membro"
+      },
+      "allOf": [
+        {
+          "contains": {
+            "properties": {
+              "ativo": {
+                "const": true
+              },
+              "papeis": {
+                "contains": {
+                  "const": "P.O."
+                }
+              }
+            },
+            "required": [
+              "papeis",
+              "ativo"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1,
+          "$comment": "Exatamente um P.O. ativo."
+        },
+        {
+          "contains": {
+            "properties": {
+              "ativo": {
+                "const": true
+              },
+              "papeis": {
+                "contains": {
+                  "const": "SM"
+                }
+              }
+            },
+            "required": [
+              "papeis",
+              "ativo"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1,
+          "$comment": "Exatamente um SM ativo (dono da [GB]; pode ser o P.O.)."
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "data": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "format": "date"
+    },
+    "membro": {
+      "type": "object",
+      "if": {
+        "properties": {
+          "papeis": {
+            "contains": {
+              "const": "Dev"
+            }
+          }
+        },
+        "required": [
+          "papeis"
+        ]
+      },
+      "then": {
+        "required": [
+          "senioridade"
+        ]
+      },
+      "required": [
+        "nome",
+        "login",
+        "papeis",
+        "horas-semana",
+        "horas-revisao-semana",
+        "ativo",
+        "ausencias"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "login": {
+          "type": "string",
+          "pattern": "^[^\\s@]+$",
+          "description": "Login do ELM, sem domínio."
+        },
+        "papeis": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "P.O.",
+              "Especificador",
+              "Dev",
+              "QA",
+              "SM"
+            ]
+          },
+          "description": "Papéis da pessoa (um ou mais). As horas de revisão e de especificação já separam o tempo de cada frente."
+        },
+        "senioridade": {
+          "enum": [
+            "Júnior",
+            "Pleno",
+            "Sênior"
+          ],
+          "description": "Obrigatória para quem tem o papel Dev. Decide o modo das fatias que a pessoa implementa (Júnior: sempre HITL · Pleno: pelos critérios da fatia · Sênior: AFK por padrão) e quem revisa PR (a [REV] é sempre de um Dev Sênior)."
+        },
+        "horas-semana": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "horas-revisao-semana": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 60,
+          "description": "Horas por semana de revisar (planos, PRs) e verificar (aceite), somadas num número só; parte de horas-semana, nunca maior que ela."
+        },
+        "horas-especificacao-semana": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 60,
+          "description": "Horas por semana de especificação (entrevista, PRD, fatiamento: tarefas [ESP]); parte de horas-semana. Ausente = 0."
+        },
+        "atende": {
+          "type": "boolean",
+          "description": "Faz Sustentação (tarefas de toda categoria: [ATD], [IMPL]…): responsável sugerido na triagem. A reserva é das horas do time inteiro. Ausente = false."
+        },
+        "ativo": {
+          "type": "boolean",
+          "description": "Quem sai fica false (preserva o histórico)."
+        },
+        "ausencias": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "inicio",
+              "fim",
+              "motivo"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "inicio": {
+                "$ref": "#/$defs/data"
+              },
+              "fim": {
+                "$ref": "#/$defs/data"
+              },
+              "motivo": {
+                "enum": [
+                  "férias",
+                  "folga",
+                  "treinamento",
+                  "outro"
+                ],
+                "description": "Genérico de propósito: sem dado pessoal (nada de saúde ou motivo particular)."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

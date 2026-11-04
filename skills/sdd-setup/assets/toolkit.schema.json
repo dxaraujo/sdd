@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/dxaraujo/kiro/main/powers/sdd/skills/sdd-setup/assets/toolkit.schema.json",
+  "title": "Toolkit do sdd",
+  "description": "Manifesto de um toolkit: conjunto de skills (e opcionalmente steering e comandos) para um tipo de projeto ou stack, mantido fora do fluxo sdd e descoberto pela skill sdd-setup.",
+  "type": "object",
+  "required": ["nome", "versao", "descricao", "tipos-de-projeto", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "nome": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Identificador do toolkit em kebab-case (ex.: spring-batch, java-backend, angular)."
+    },
+    "versao": { "type": "string", "description": "Versão semântica do toolkit." },
+    "descricao": { "type": "string", "minLength": 10 },
+    "tipos-de-projeto": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["backend", "batch", "frontend", "mobile", "dados", "biblioteca", "infra"] }
+    },
+    "deteccao": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Como reconhecer, no repositório, que o toolkit se aplica.",
+      "properties": {
+        "arquivos": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Arquivos procurados na raiz e nos módulos (ex.: pom.xml, package.json)."
+        },
+        "contem": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Trechos que, presentes em algum dos arquivos, confirmam o toolkit."
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["caminho", "papeis"],
+        "additionalProperties": false,
+        "properties": {
+          "caminho": {
+            "type": "string",
+            "pattern": "^[^/\\\\][^\\\\]*SKILL\\.md$",
+            "description": "Caminho relativo à pasta do toolkit, com /."
+          },
+          "papeis": { "$ref": "#/$defs/papeis" }
+        }
+      }
+    },
+    "steering": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["caminho", "papeis"],
+        "additionalProperties": false,
+        "properties": {
+          "caminho": { "type": "string", "pattern": "^[^/\\\\][^\\\\]*\\.md$" },
+          "papeis": { "$ref": "#/$defs/papeis" }
+        }
+      }
+    },
+    "comandos": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Propostas para a seção Comandos do sdd.md; {alvo} = classe/arquivo de teste.",
+      "properties": {
+        "compilar": { "type": "string" },
+        "testes": { "type": "string" },
+        "teste-unico": { "type": "string" },
+        "cobertura": { "type": "string" },
+        "lint": { "type": "string" },
+        "executar": { "type": "string" }
+      }
+    },
+    "verificacao": {
+      "type": "string",
+      "description": "Como executar os cenários de aceite neste tipo de projeto (usado pela sdd-verificar)."
+    }
+  },
+  "$defs": {
+    "papeis": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["produto", "pesquisador", "codificador", "revisor", "verificador", "orquestrador"] }
+    }
+  }
+}

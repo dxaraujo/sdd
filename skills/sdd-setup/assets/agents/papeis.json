@@ -1,0 +1,146 @@
+{
+  "$comment": "Fonte única dos agentes sdd. O scripts/gerar_agentes.py junta isto com o .kiro/config/sdd/agentes.json do projeto e grava .kiro/agents/sdd-<papel>.json (Kiro IDE e CLI V3). Regras em references/agentes.md. Padrão com {{X}} cujo valor no projeto é null sai da saída.",
+  "mcp_do_power": {
+    "elm": ["elm_status", "elm_ler_wi", "elm_listar_wi", "elm_criar_wi", "elm_atualizar_wi", "elm_transicao", "elm_comentar",
+            "elm_anexo", "elm_horas", "elm_lancar_horas", "elm_remover_horas", "elm_ligar", "elm_buscar_req", "elm_ler_req",
+            "elm_publicar_req", "elm_criar_ct", "elm_iteracao", "elm_backlog", "elm_sync", "elm_buscar_req_local",
+            "elm_ler_req_local", "elm_listar_req_local", "elm_indexar_local", "elm_explorar_local",
+            "elm_setup_descobrir"],
+    "gitlabpr": ["gitlab_listar_mrs", "gitlab_obter_mr", "gitlab_criar_mr", "gitlab_mesclar_mr"]
+  },
+  "grupos": {
+    "elm-local": ["elm/elm_buscar_req_local", "elm/elm_ler_req_local", "elm/elm_listar_req_local", "elm/elm_indexar_local"],
+    "elm-leitura": ["elm/elm_status", "elm/elm_ler_wi", "elm/elm_listar_wi", "elm/elm_horas", "+elm-local"],
+    "elm-tarefa": ["elm/elm_transicao", "elm/elm_comentar", "elm/elm_anexo", "elm/elm_lancar_horas", "elm/elm_remover_horas"],
+    "gitlab-leitura": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr"]
+  },
+  "shell": {
+    "git-leitura": {
+      "comandos": ["git status*", "git diff*", "git log*", "git show*", "git grep*", "git ls-files*", "git ls-tree*",
+                   "git rev-parse*", "git branch", "git branch --show-current", "git branch --list*", "git branch -a*",
+                   "git branch -r*", "git branch -v*", "git worktree list*", "git for-each-ref*", "git config user.name",
+                   "git config user.email"],
+      "exceto": ["*--output*", "*--no-index*", "* -O*", "*--open-files-in-pager*", "*--ext-diff*"]
+    },
+    "worktree": {"comandos": ["cd .kiro/local/wt/*"], "exceto": ["*..*"]},
+    "creditos": {"comandos": ["uv run --no-project python *sdd-status/scripts/creditos.py*"]},
+    "git-escrita": {
+      "comandos": ["git add *", "git commit *", "git fetch*", "git pull --ff-only*", "git switch *"],
+      "exceto": ["* -f*", "* --ff", "* --ff *"]
+    },
+    "negar": ["git -C *", "git -c *", "*git merge*", "*git rebase*", "*git pull*--rebase*", "*git pull*--no-ff*",
+              "*git commit* -n", "*git commit* -n *", "*--discard-changes*", "*git reset*--hard*", "*git clean*", "*git stash*",
+              "*git checkout -- *", "*git checkout .*", "*git restore *", "*git worktree remove*", "*git branch*-D*",
+              "*git branch*-M*", "*--force*", "*--delete*", "*--no-verify*", "*--upload-pack*", "*--receive-pack*",
+              "*gh pr merge*", "*glab mr merge*", "*rm -rf*", "*rm -fr*", "*.env*", "*.ssh/*", "*.aws/*", "*.config/mcp-*",
+              "*.pem*", "*.key", "*.key *", "*{{BUNDLE}}*"],
+    "push-perigoso": ["*git push* -f*", "*git push* +*", "*git push* :*", "*git push*--mirror*", "*git push*--all*",
+                      "*git push*--prune*", "*git push", "*git push origin", "*git push* HEAD*", "*git push* @*",
+                      "*git push*:{{BASE}}*", "*git push*heads/{{BASE}}*"]
+  },
+  "ler": {
+    "permitir": ["./**", "{{POWER}}/**"],
+    "negar": ["**/.env", "**/.env/**", "**/.env.*", "**/.env.*/**", "**/*.pem", "**/*.pem/**", "**/*.key", "**/*.key/**",
+              "~/.ssh/**", "~/.aws/**", "~/.config/mcp-elm/**", "~/.config/mcp-gitlabpr/**", "{{BUNDLE}}/**"]
+  },
+  "papeis": {
+    "produto": {
+      "description": "Agente de produto do fluxo sdd — faz a triagem de toda demanda nova e a registra no backlog, conduz a entrevista de alinhamento (grill), escreve o PRD do épico, quebra em fatias verticais, cuida do planejamento ágil (roadmap, sprint, review, virada) e da Sustentação (atendimentos de cliente e demais categorias) e da consolidação da fatia pronta, com o glossário do domínio e o ELM. Não escreve código.",
+      "welcomeMessage": "Vamos trabalhar em quê? (nova demanda, PRD, fatiar, planejar a sprint, review, virada, atendimento ou outro item de Sustentação, consolidar uma fatia pronta)",
+      "skills": ["sdd-triar", "sdd-entrevistar", "sdd-prd", "sdd-fatiar", "sdd-planejamento", "sdd-atender", "sdd-executar", "sdd-consolidar",
+                 "sdd-aprender", "sdd-especificar", "sdd-iniciar", "sdd-status"],
+      "subagentes": ["sdd-pesquisador", "sdd-revisor"],
+      "shell": ["git-leitura", "worktree", "creditos", "git-escrita"],
+      "push": "negar",
+      "escreve": ["{{PRODUTO}}/**", "{{GLOSSARIO}}", "{{ADR}}/**", ".kiro/specs/*/decisoes.md", ".kiro/specs/*/status.md",
+                  ".kiro/specs/*/verificacao.md", ".kiro/specs/*/elm/**", ".kiro/local/wt/*/.kiro/specs/*/decisoes.md",
+                  ".kiro/local/sustentacao/**", ".kiro/local/especificacao/**"],
+      "mcp_libera": ["+elm-leitura", "elm/elm_buscar_req", "elm/elm_ler_req", "+gitlab-leitura"],
+      "mcp_pergunta": ["+elm-tarefa", "elm/elm_criar_wi", "elm/elm_atualizar_wi", "elm/elm_ligar", "elm/elm_publicar_req",
+                       "elm/elm_criar_ct", "elm/elm_iteracao", "elm/elm_sync"]
+    },
+    "pesquisador": {
+      "description": "Pesquisador do fluxo sdd, somente leitura do código — lê o código, a documentação do ELM no repositório e o banco (consulta) e devolve fatos com arquivo:linha em research.md, sem opinar nem propor solução. Use para pesquisar uma fatia antes do plano e para buscar fatos durante entrevistas e PRDs.",
+      "welcomeMessage": "Qual fatia (FT-nnn) ou pergunta sobre o código devo pesquisar?",
+      "skills": ["sdd-pesquisar"],
+      "shell": ["git-leitura", "worktree", "creditos"],
+      "shell_negar": ["*git add*", "*git commit*", "*git switch*", "*git worktree add*"],
+      "push": "negar",
+      "escreve": [".kiro/specs/*/research.md", ".kiro/local/wt/*/.kiro/specs/*/research.md"],
+      "mcp_libera": ["+elm-local"]
+    },
+    "codificador": {
+      "description": "Codificador do fluxo sdd — planeja a fatia no formato de spec do Kiro (sdd-plano) e a implementa em ciclo de teste com backpressure (sdd-implementar), usando as skills do toolkit do projeto ligadas a ele. Leva a fatia até o merge (push da branch da fatia com confirmação, PR e merge do PR aprovado) e grava na base, com confirmação, a situação dela (iniciada, pronta). Em modo autônomo trabalha só na worktree recebida, não faz push nem abre PR.",
+      "welcomeMessage": "Qual fatia (FT-nnn) devo planejar ou implementar?",
+      "skills": ["sdd-plano", "sdd-implementar", "sdd-desenvolver", "sdd-iniciar", "sdd-status"],
+      "subagentes": ["sdd-pesquisador", "sdd-revisor", "sdd-verificador"],
+      "shell": ["git-leitura", "worktree", "creditos", "git-escrita"],
+      "shell_permitir": ["uuidgen*"],
+      "shell_perguntar": ["git reset --keep origin/*"],
+      "comandos": ["build", "verificacao"],
+      "http_sh": true,
+      "push": "perguntar",
+      "escreve": ["./**"],
+      "nao_escreve": ["**/.kiro/agents/**", "**/.kiro/hooks/**", "**/.kiro/workflows/**", "**/.kiro/steering/**", "{{PRODUTO}}/**",
+                      ".kiro/local/wt/*/{{PRODUTO}}/**", ".kiro/local/wf/**", "**/.git/**", "**/.git", "**/.kiro/sdd/**",
+                      "**/.kiro/settings/**", "**/.kiro/skills/**", "**/.kiro/toolkits/**", "**/.kiro/config/**", "**/AGENTS.md"],
+      "nao_escreve_exceto": ["{{PRODUTO}}/backlog.md", "{{PRODUTO}}/sprints/**"],
+      "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],
+      "mcp_pergunta": ["+elm-tarefa", "elm/elm_criar_wi", "elm/elm_atualizar_wi", "elm/elm_ligar", "gitlabpr/gitlab_criar_mr",
+                       "gitlabpr/gitlab_mesclar_mr"]
+    },
+    "revisor": {
+      "description": "Revisor independente do fluxo sdd, com contexto limpo — revisa PRD (rubrica P), plano da fatia (rubrica L) ou código (rubrica C, eixos spec e padrões separados), executa o backpressure e escreve só o próprio relatório. Nunca altera código, plano ou documentação.",
+      "welcomeMessage": "O que devo revisar? (PRD de um épico, plano ou código de uma fatia)",
+      "skills": ["sdd-revisar", "sdd-iniciar", "sdd-status"],
+      "shell": ["git-leitura", "worktree", "creditos", "git-escrita"],
+      "shell_negar": ["*git push* {{BASE}}", "*git push* {{BASE}} *"],
+      "comandos": ["build"],
+      "push": "perguntar",
+      "escreve": [".kiro/specs/*/revisao-*.md", ".kiro/local/wt/*/.kiro/specs/*/revisao-*.md", ".kiro/specs/*/analise-*.md",
+                  ".kiro/local/wt/*/.kiro/specs/*/analise-*.md", "{{PRODUTO}}/epicos/*/revisao-*.md",
+                  ".kiro/local/especificacao/*/revisao-prd-*.md", ".kiro/local/wf/*/*.json", ".kiro/specs/*/status.md",
+                  ".kiro/local/wt/*/.kiro/specs/*/status.md"],
+      "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],
+      "mcp_pergunta": ["+elm-tarefa"]
+    },
+    "verificador": {
+      "description": "Verificador de aceite do fluxo sdd — executa de ponta a ponta, na aplicação de verdade (API, job batch, tela no browser, carga), cada cenário do contrato de pronto da fatia, com massa de teste e evidência por cenário, decide ACEITO/REJEITADO e gera o CT.csv para o ETM. Não altera código de produção.",
+      "welcomeMessage": "Qual fatia (FT-nnn) devo verificar?",
+      "skills": ["sdd-verificar", "sdd-iniciar", "sdd-status"],
+      "shell": ["git-leitura", "worktree", "creditos", "git-escrita"],
+      "shell_perguntar": ["curl *", "wget *"],
+      "shell_negar": ["*git push* {{BASE}}", "*git push* {{BASE}} *"],
+      "comandos": ["verificacao"],
+      "http_sh": true,
+      "push": "perguntar",
+      "escreve": [".kiro/specs/*/verificacao.md", ".kiro/local/wt/*/.kiro/specs/*/verificacao.md", ".kiro/specs/*/CT.csv",
+                  ".kiro/local/wt/*/.kiro/specs/*/CT.csv", ".kiro/specs/*/status.md", ".kiro/local/wt/*/.kiro/specs/*/status.md",
+                  ".kiro/specs/*/evidencias/**", ".kiro/local/wt/*/.kiro/specs/*/evidencias/**", ".kiro/specs/*/massa/**",
+                  ".kiro/local/wt/*/.kiro/specs/*/massa/**", ".kiro/local/verificacao/**", ".kiro/local/wf/*/aceite.json",
+                  "{{MASSA}}/**"],
+      "mcp_libera": ["+elm-leitura"],
+      "mcp_pergunta": ["+elm-tarefa"]
+    },
+    "orquestrador": {
+      "description": "Orquestrador do fluxo sdd — executa a skill sdd-loop, levando fatias AFK planejadas da pesquisa ao PR aberto, uma worktree por fatia em .kiro/local/wt/, delegando cada fase a um subagente de contexto limpo (pesquisador, codificador, revisor, verificador), dentro do limite de WIP de revisão humana. Único que cria worktrees; grava na base a situação iniciada do lote e faz push com a autorização dada no início do lote. Nunca faz merge.",
+      "welcomeMessage": "Quais fatias AFK devo levar até o PR? (lista de FT-nnn ou \"as planejadas da sprint\")",
+      "skills": ["sdd-loop", "sdd-status", "sdd-desenvolver", "sdd-plano", "sdd-implementar"],
+      "subagentes": ["sdd-pesquisador", "sdd-codificador", "sdd-revisor", "sdd-verificador"],
+      "shell": ["git-leitura", "worktree", "creditos", "git-escrita"],
+      "shell_permitir": ["uuidgen*", "git worktree add .kiro/local/wt/*"],
+      "shell_perguntar": ["git reset --keep origin/*"],
+      "shell_negar": ["*git worktree add*..*"],
+      "comandos": ["build", "verificacao"],
+      "http_sh": true,
+      "push": "loop",
+      "escreve": [".kiro/local/loop-*.md", ".kiro/specs/**", ".kiro/local/wt/*/**", "{{PRODUTO}}/backlog.md",
+                  "{{PRODUTO}}/sprints/**"],
+      "nao_escreve": [".kiro/local/wt/*/.kiro/agents/**", ".kiro/local/wt/*/.kiro/hooks/**", ".kiro/local/wt/*/.kiro/workflows/**",
+                      ".kiro/local/wt/*/.kiro/steering/**", ".kiro/local/wt/*/.kiro/sdd/**", ".kiro/local/wt/*/{{PRODUTO}}/**",
+                      "**/.git/**", "**/.git"],
+      "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],
+      "mcp_pergunta": ["+elm-tarefa", "elm/elm_criar_wi", "elm/elm_atualizar_wi", "elm/elm_ligar", "gitlabpr/gitlab_criar_mr"]
+    }
+  }
+}

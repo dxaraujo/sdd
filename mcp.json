@@ -1,0 +1,35 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "elk": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-elk@latest"
+      ],
+      "env": {
+        "UV_SYSTEM_CERTS": "true"
+      }
+    },
+    "elm": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-elm@3.6.4"
+      ],
+      "env": {
+        "UV_SYSTEM_CERTS": "true"
+      }
+    },
+    "gitlabpr": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-gitlabpr@latest"
+      ],
+      "env": {
+        "UV_SYSTEM_CERTS": "true"
+      }
+    }
+  }
+}

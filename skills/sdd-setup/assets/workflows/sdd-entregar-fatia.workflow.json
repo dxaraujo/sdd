@@ -1,0 +1,66 @@
+{
+  "name": "sdd-entregar-fatia",
+  "description": "sdd — leva UMA fatia AFK de plano aprovado até o PR: implementação (teste primeiro + backpressure), revisão independente, verificação de aceite e retrabalho em ciclo (até 3 voltas; 2ª reprovação da revisão ou 2ª rejeição do aceite → bloqueada), e a entrega com a pessoa: ADRs e ET as-built, branch atualizada com a base, push e PR pelo MCP gitlabpr (o Kiro confirma cada um), [APR] Aprovar PR para o Dev Sênior, aguardando-aprovacao-pr, horas e créditos da execução. A pessoa dispara na branch da fatia, no checkout principal; cada passo roda numa sessão nova. Fatia HITL não usa esta receita: a sdd-implementar termina no PR, com [REV] e [VER] de pessoas. Informe a fatia sempre do mesmo jeito (o id do backlog, ex.: FT-031): o estado da execução fica em .kiro/local/wf/<fatia como digitada>/.",
+  "inputs": {
+    "fatia": "string"
+  },
+  "steps": [
+    {
+      "type": "step",
+      "id": "conferir",
+      "agent": "sdd-revisor",
+      "prompt": "Fatia {{fatia}}. Leia o status.md da pasta de .kiro/specs/ cujo nome começa pelo id em minúsculas (ex.: ft-031-…), nesta branch. Modo diferente de AFK → não grave nada e termine com send_message severity error: 'receita só para fatia AFK; a HITL segue pela sdd-implementar até o PR, com [REV] e [VER] de pessoas'. Fase fora de implementando, revisando, verificando ou retrabalho (mudanças pedidas na [APR] Aprovar PR) → não grave nada e termine com severity error dizendo a fase e a skill que a trata (planejando ou aguardando-aprovacao-plano → sdd-planejar-fatia ou o GATE; bloqueada → sessão interativa; verificada ou depois → sdd-implementar Passo 5 ou sdd-desenvolver). Senão grave .kiro/local/wf/{{fatia}}/codigo.json com {\"veredito\": \"PENDENTE\", \"inicio\": \"<data e hora local agora, AAAA-MM-DDTHH:MM:SS>\"} e .kiro/local/wf/{{fatia}}/aceite.json com {\"resultado\": \"PENDENTE\"} (zeram a execução anterior; o inicio é o --desde dos créditos na entrega). Não faça mais nada."
+    },
+    {
+      "type": "repeat",
+      "id": "ciclo",
+      "maxIterations": 3,
+      "onMaxIterations": "pause",
+      "stopCondition": {
+        "fileCheck": {
+          "path": ".kiro/local/wf/{{fatia}}/aceite.json",
+          "jsonPath": "resultado",
+          "value": "ACEITO"
+        }
+      },
+      "steps": [
+        {
+          "type": "step",
+          "id": "implementar",
+          "agent": "sdd-codificador",
+          "prompt": "Fatia {{fatia}}. AUTONOMO=true. Siga a skill sdd-implementar, Passos 0 a 2: as tarefas pendentes do tasks.md, os achados do último revisao-codigo-<N>.md com veredito REVISAR, se houver, e os cenários REJEITADO do último verificacao.md (quando ele é mais novo que a última revisão), como tarefas [R<n>] — o Passo 0 da sdd-implementar. Nada pendente (volta depois de uma revisão APROVADO sem aceite rejeitado) → não mexa em nada e termine com severity success. Não peça revisão, não faça push nem abra PR. No status.md, ao terminar as tarefas: fase revisando, commitado com o último commit de tarefa. Lacuna de negócio ou divergência com o plano: registre a pergunta (ou Esperado / Encontrado / Por que importa) no status.md e termine com send_message severity warning trazendo-a — a execução pausa até a pessoa responder neste passo; com a resposta, registre a decisão, conclua e termine com severity success. Bloqueio técnico (build quebrado na base, ferramenta ou ambiente fora): send_message severity error com o motivo."
+        },
+        {
+          "type": "step",
+          "id": "revisar",
+          "agent": "sdd-revisor",
+          "prompt": "Fatia {{fatia}}. Revise o código pela rubrica C da skill sdd-revisar (diff contra a branch base do sdd.md), eixos spec e padrões separados. Grave o revisao-codigo-<N>.md na pasta da fatia e, em .kiro/local/wf/{{fatia}}/codigo.json, troque só o veredito para \"APROVADO\" ou \"REVISAR\" (mantenha o inicio). Não conseguiu revisar (build quebrado sem relação com a fatia, ferramenta ou ambiente fora): send_message severity error com o motivo. Não altere o status.md nem faça commit: o passo seguinte registra."
+        },
+        {
+          "type": "step",
+          "id": "registrar_revisao",
+          "agent": "sdd-codificador",
+          "prompt": "Fatia {{fatia}}. AUTONOMO=true. Incremente \"revisão do código\" em Rodadas no status.md (quem incrementa é este passo) e registre o veredito do último revisao-codigo-<N>.md no Histórico e a linha Drift de negócio dele no campo do mesmo nome (só sobe de não para sim). APROVADO → fase verificando. REVISAR → fase implementando, com os achados em 'Achados abertos'; se for a 2ª reprovação → fase bloqueada (de: revisando), com as opções da sdd-implementar (orientar a correção, voltar ao plano, aceitar os achados). Commite o revisao-codigo-<N>.md com o status.md (mensagem no padrão de commit do sdd.md, texto 'registrar revisão <N>'). Termine com send_message severity success (APROVADO, ou REVISAR na 1ª rodada: a próxima volta do ciclo corrige) ou error (bloqueada)."
+        },
+        {
+          "type": "step",
+          "id": "verificar",
+          "agent": "sdd-verificador",
+          "prompt": "Fatia {{fatia}}. Leia .kiro/local/wf/{{fatia}}/codigo.json. Veredito diferente de APROVADO → não verifique: grave .kiro/local/wf/{{fatia}}/aceite.json com {\"resultado\": \"PENDENTE\"} e termine com severity success. APROVADO → siga a skill sdd-verificar com o contrato de pronto do design.md; grave verificacao.md e, se ACEITO, o CT.csv; no status.md, fase verificada (ACEITO) ou implementando com os cenários rejeitados (REJEITADO); e grave aceite.json com {\"resultado\": \"ACEITO\"} ou {\"resultado\": \"REJEITADO\"}. Não faça commit: o passo seguinte registra. Termine com send_message severity success; só ambiente fora do ar → severity error com o motivo."
+        },
+        {
+          "type": "step",
+          "id": "registrar_verificacao",
+          "agent": "sdd-codificador",
+          "prompt": "Fatia {{fatia}}. AUTONOMO=true. Leia .kiro/local/wf/{{fatia}}/aceite.json. PENDENTE (não houve verificação nesta volta) → não faça nada e termine com severity success. Senão incremente \"verificação\" em Rodadas no status.md (quem incrementa é este passo), registre o resultado no Histórico e a linha Drift de negócio do relatório no campo do mesmo nome (só sobe de não para sim). REJEITADO → também \"retrabalho\" + 1 em Rodadas e uma linha na tabela Retrabalho (Papel 'verificação (AFK)', o relatório, a data, Horas '—'); a próxima volta do ciclo implementa os cenários rejeitados e passa de novo pela revisão. 2ª rejeição (o Histórico já tem uma rejeição desta verificação) → fase bloqueada (de: verificando), com as opções da sdd-implementar. Commite verificacao.md, CT.csv, evidencias/, massa/ e o status.md (mensagem no padrão de commit do sdd.md, texto 'registrar verificação'). Termine com send_message severity success (ACEITO, ou REJEITADO na 1ª vez) ou error (bloqueada)."
+        }
+      ]
+    },
+    {
+      "type": "step",
+      "id": "entregar",
+      "agent": "sdd-codificador",
+      "prompt": "Fatia {{fatia}}. Este passo é com a pessoa (sem AUTONOMO): cada pergunta vai num send_message severity warning, e a execução pausa até ela responder neste passo. Confira: fase verificada no status.md e .kiro/local/wf/{{fatia}}/aceite.json com ACEITO; senão termine com severity error dizendo a fase. Então o Passo 5 da skill sdd-implementar inteiro, nesta ordem: ADRs e ET as-built (item 0); branch atualizada com a base (item 1: desatualizada → pare com severity error 'branch desatualizada com a base: atualize numa sessão com a pessoa e rode só a entrega de novo'); texto do PR (item 2); commit, push da branch da fatia (o Kiro confirma; nunca a base) e conferência no remoto; PR pela gitlab_listar_mrs (já existe → é esse) ou gitlab_criar_mr (o Kiro confirma), e confira o PR aberto; pergunte qual Dev Sênior aprova o PR (sugira outro que não quem implementa) e, com 'sim', a [APR] FT-<nnn> Aprovar PR (§8 de elm-sprint.md); status.md em aguardando-aprovacao-pr com o link do PR; horas na [DEV] (lança, não conclui: a [DEV] fica em andamento até o merge). Push ou PR recusado → fica em verificada com o título e a descrição do PR prontos, como manda a skill. Créditos da execução, antes do último commit: o script creditos.py da skill sdd-status com --desde = o inicio do codigo.json — as sessões que ele lista desde então são os passos desta receita; com 'sim', uma linha por sessão na seção Créditos do status.md (Papel 'workflow entregar'). Commit, push e conferência do status.md (item 7). Termine com send_message severity success com o link do PR, quem foi avisado e o próximo passo: 'o Dev Sênior <login> lê e aprova o PR pela sdd-revisar (Aprovação do PR); depois, o merge pela sdd-desenvolver'."
+    }
+  ]
+}

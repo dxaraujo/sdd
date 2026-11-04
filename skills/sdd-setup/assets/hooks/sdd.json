@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "sdd-backpressure",
+      "description": "sdd: depois de cada tarefa de spec (Start task / Run all tasks), compila e roda os testes com os comandos do sdd.md, com a saída na saída de erro. Falha: na IDE, a saída de erro vai para o agente; no CLI V3, vira aviso. Não bloqueia a próxima tarefa — o portão é o backpressure que o próprio agente roda a cada tarefa.",
+      "trigger": "PostTaskExec",
+      "action": {
+        "type": "command",
+        "command": "({{COMPILAR}} && {{TESTES}}) 1>&2"
+      },
+      "timeout": 900,
+      "enabled": true
+    }
+  ]
+}
