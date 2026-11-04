@@ -146,9 +146,10 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 
 ## Especificação
 
-| EP | Responsável | Horas previstas | Situação | Tarefa ELM | Créditos | Observação |
+| Item | Responsável | Horas previstas | Situação | Tarefa ELM | Créditos | Observação |
 |---|---|---|---|---|---|---|
 | EP-05 | rita.melo | 16 | iniciada | ESP 669377 | — | |
+| FT-040 | ana.souza | 4 | planejada | ESP 669390 | — | |
 
 ## Sustentação
 
@@ -211,7 +212,9 @@ quem causa a transição (ou pela sincronização, com a evidência do git: `ini
 `saiu da sprint`; desvios `dividida`, `cancelada`); o detalhe da `iniciada` é a fase do `status.md`. Especificação:
 `planejada` → `iniciada` → `concluida` · `cancelada` (a do épico assumido sem ter sido planejado nasce `iniciada`,
 pela `sdd-especificar`, com Horas previstas `—`, Tarefa ELM `ESP <id>` ou `pendente` e a Observação `puxada`; a que
-sai da sprint fica `elegivel`, com `saiu da sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
+sai da sprint fica `elegivel`, com `saiu da sprint`; a da fatia `nova` segue as mesmas situações, e a fatia fica
+`nova` no `backlog.md` até a `[ESP]` concluir: então ela nasce nas Fatias, `planejada`, com a Observação `especificada
+na sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
 `cancelado` (a que sai da sprint fica `aberto`, com `saiu da sprint`). A linha migrada guarda a última situação.
 **O item que volta** à sprint de onde saiu ganha linha nova; a com `saiu da sprint` fica como histórico — nunca é
 editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a sem ela

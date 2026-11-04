@@ -12,6 +12,10 @@ fatia e pelo primeiro item não marcado do `tasks.md`.
   pessoa). Sem a ferramenta de subagente → pare e devolva "aguardando verificação".
 - **Carregue a skill do toolkit** do artefato antes de escrevê-lo — nunca escreva de memória o que uma skill do
   projeto padroniza.
+- **Pergunte antes de varrer** (regra do `sdd.md`): precisa de algo fora do `design.md`, do `research.md` e dos
+  arquivos que eles citam (job irmão, outra fatia, a base) → pergunte à pessoa antes de procurar. Antes de chamar
+  pesquisador, revisor ou verificador, pergunte o que ela já sabe (onde olhar, o análogo, como subir o ambiente e
+  a massa) e passe as respostas como **Indicações da pessoa** no pedido.
 - Teste primeiro, pelo ponto de teste do `design.md`; backpressure (comandos do `sdd.md`) a cada tarefa.
 - **Nunca** apague, desabilite ou afrouxe um teste para ficar verde. Divergência entre plano e código → pare e
   reporte "Esperado / Encontrado / Por que importa".

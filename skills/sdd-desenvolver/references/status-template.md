@@ -13,11 +13,15 @@
 | Rodadas | revisão do plano 0 · revisão do código 0 · verificação 0 · retrabalho 0 |
 | PR | — |
 | Bloqueio | — (ou: `<motivo>` · pergunta: `<pergunta exata>` — junto com `Fase: bloqueada (de: <fase>)`) |
-| ELM | <IB <id> (DF <id>, se o item da fatia é o defeito de origem) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> (consolidação) \| sem ELM \| pendente> — os rótulos da coluna `elm` do backlog |
+| ELM | <IB <id> (DF <id>, se o item da fatia é o defeito de origem) · ESP <id> (fatia especificada na branch) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> (consolidação) \| sem ELM \| pendente> — os rótulos da coluna `elm` do backlog |
 | Banco (DDL) | <não se aplica \| pendente \| aplicada em dev \| aplicada em prod> |
 | Drift de negócio | — (marcado pela REV e pela VER: `não` \| `sim — <motivo>`) |
 
-<!-- Fases por modo:
+<!-- Especificação (fatia nova, sdd-especificar, antes de qualquer modo): especificando ([ESP] assumida; a branch e
+     este arquivo nascem nela) → especificada ([ESP] concluída; fatia planejada na base, [DEV] criada — [REV] e
+     [VER] só no HITL) → a sdd-desenvolver começa: pesquisando. status.md em especificando ou especificada NÃO é
+     evidência de início: a fatia não está iniciada (sincronização da sprint, painel, WIP, próxima fatia, loop).
+     Fases por modo:
      HITL  pesquisando → planejando → [aguardando-aprovacao-plano: pela senioridade] → implementando → pr-aberto
            ([DEV] em andamento) → em-revisao ([REV] assumida; concluída ao aprovar) → em-verificacao ([VER]
            assumida; concluída ao aceitar) → aceita → pronta (merge pelo Dev, [DEV] concluída) → concluida

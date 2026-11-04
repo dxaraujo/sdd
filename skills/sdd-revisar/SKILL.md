@@ -4,7 +4,7 @@ description: "Revisão independente do fluxo sdd, com contexto limpo e sem alter
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-revisar — Verificação independente
@@ -56,6 +56,9 @@ aponta e as regras aprendidas (última seção do `sdd.md`).
   `assertTrue(true)`, asserts apagados, `catch` vazio) — C4. Avalie os dois eixos separadamente; com subagentes
   disponíveis, um revisor por eixo, em paralelo.
 - Banco só por MCP de consulta, somente leitura (`SELECT`/`WITH`).
+- **Escopo:** a entrada da tabela do Passo 1. Abrir além dela (job ou funcionalidade irmã, outra fatia, a base) →
+  **pergunte antes** à pessoa onde olhar (regra Pergunte antes de varrer do `sdd.md`); como subagente, comece pelas
+  **Indicações da pessoa** do pedido. Indicação diz onde olhar, nunca o que concluir: o julgamento continua contra a fonte.
 
 ## Passo 3 — Calibrar
 

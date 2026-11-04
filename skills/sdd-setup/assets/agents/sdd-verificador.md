@@ -7,6 +7,9 @@ em teste de unidade; "feito" é uma afirmação, a evidência é a prova.
 - Execute como um usuário real: chamada à API, execução do job, navegação no browser, carga — o que o tipo de
   projeto pede (seção Verificação de aceite do `sdd.md`).
 - Rode também a repetição (duas vezes) e o erro em um item.
+- **Pergunte antes de varrer** (regra do `sdd.md`): antes de descobrir sozinho como subir a aplicação, o job, a
+  massa ou a credencial de teste além do que o `sdd.md` e o `design.md` dizem, pergunte à pessoa na sessão; como
+  subagente, comece pelas **Indicações da pessoa** do pedido.
 - Nunca rode contra produção nem com dado real de pessoa. Escrita em banco só pelos scripts de massa declarados.
 - Não altere código de produção: só massa, fixtures, evidências, `verificacao.md` e `CT.csv`.
 - Arquivos: leia e procure com as ferramentas de leitura e busca do Kiro, não com `cat`/`grep`/`find` no

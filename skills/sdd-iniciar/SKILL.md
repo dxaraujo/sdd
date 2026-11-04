@@ -4,7 +4,7 @@ description: "Hub de início do fluxo sdd — recebe um work item já registrado
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-iniciar — Hub: qual skill faz este item
@@ -34,7 +34,7 @@ diga o que ele é e peça o item.
 | Item informado | Skill | Papel / agente |
 |---|---|---|
 | pedido em texto, ou id que não está no backlog | **`sdd-triar`** | P.O. / `sdd-produto` |
-| `EP-nn`, tarefa `[ESP]` | **`sdd-especificar`** | Especificador / `sdd-produto` |
+| `EP-nn`, tarefa `[ESP]` (de épico ou de fatia) | **`sdd-especificar`** | Especificador / `sdd-produto` |
 | `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sdd-desenvolver`** | Dev / `sdd-codificador` |
 | tarefa `[REV]` | **`sdd-revisar`** (rubrica C sobre o PR) | Revisor / `sdd-revisor` |
 | tarefa `[APR] FT-nnn Aprovar plano` | **`sdd-revisar`** (seção "Aprovação do plano — a `[APR]`") | Aprovador (Dev Sênior) / `sdd-revisor` |
@@ -42,6 +42,8 @@ diga o que ele é e peça o item.
 | tarefa `[VER]` | **`sdd-verificar`** | Verificador (QA) / `sdd-verificador` |
 | `AT-nnn`, tarefa `[ATD]` | **`sdd-atender`** | quem atende / `sdd-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sdd.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sdd-executar`** | quem faz / `sdd-produto` |
+| fatia `nova` no `backlog.md` (não passa na DoR: `obs` `falta: …`), ou `status.md` em `especificando` | **`sdd-especificar`** (a `[ESP] FT-nnn`, na branch da fatia) | Especificador / `sdd-produto` |
+| `status.md` em `especificada` (especificação concluída, `[DEV]` criada) | **`sdd-desenvolver`** (começa na branch dela) | Dev / `sdd-codificador` |
 | fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sdd-desenvolver`** (retomada pelo Passo 4 — só o `responsavel` da linha retoma) | Dev responsável / `sdd-codificador` |
 | fatia em `verificada` (AFK) | **`sdd-implementar`** (Passo 5 — abrir o PR) | Dev / `sdd-codificador` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sdd-desenvolver`** (Passo 6 — merge do PR aprovado) | Dev responsável / `sdd-codificador` |

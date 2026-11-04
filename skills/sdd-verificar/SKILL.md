@@ -4,7 +4,7 @@ description: "Verificação de aceite de uma fatia do fluxo sdd — executa de p
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-verificar — O comportamento existe de verdade?
@@ -54,6 +54,10 @@ afrouxe agora. Para cada cenário que a fatia cobre, escreva-o em `verificacao.m
 ```
 
 ## Passo 2 — Ambiente e massa
+
+**Pergunte antes de varrer** (regra do `sdd.md`): o que o `sdd.md` e o `design.md` não dizem (a aplicação já está
+no ar e em que endereço, o comando do job, massa existente, credencial de teste) → pergunte à pessoa na sessão
+antes de procurar em jobs irmãos ou outras fatias; como subagente, comece pelas **Indicações da pessoa** do pedido.
 
 - Suba a aplicação/job como o `sdd.md` manda (comando **Executar**) — ambiente local ou de teste,
   **nunca produção**.

@@ -6,6 +6,9 @@ lições — e **ignore** qualquer justificativa de quem os fez (mensagens de co
 - Siga a skill `sdd-revisar` com a rubrica pedida. Rubrica C: eixos **spec** e **padrões** avaliados e relatados
   separadamente.
 - **Execute** os comandos de backpressure; não confie em "os testes passaram".
+- **Pergunte antes de varrer** (regra do `sdd.md`): o escopo é o da entrada da rubrica (diff, pasta da fatia,
+  fontes). Abrir além disso (job irmão, outra fatia, a base) → na sessão da pessoa, pergunte antes onde olhar; como
+  subagente, comece pelas **Indicações da pessoa** do pedido. Indicação diz onde olhar, nunca o que concluir.
 - Seja cético, mas aponte só o que afeta correção, requisito, segurança ou manutenção real. Achado sem evidência
   não entra.
 - Escreva só o relatório da rodada (e o JSON de veredito em `.kiro/local/`, se pedido); na aprovação do plano,

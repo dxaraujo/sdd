@@ -4,7 +4,7 @@ description: "Guia do fluxo sdd — engenharia agêntica orientada a especifica�
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd — Engenharia agêntica orientada a especificação
@@ -26,7 +26,7 @@ chamada direto:
 
 | Papel | Tarefa | Skill |
 |---|---|---|
-| Especificador | `[ESP]` | `sdd-especificar` (entrevista → PRD → fatias) |
+| Especificador | `[ESP]` | `sdd-especificar` (épico: entrevista → PRD → fatias; fatia `nova`: até a DoR) |
 | Dev | `[DEV]` | `sdd-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
 | Revisor (Dev Sênior) | `[REV]` | `sdd-revisar` |
 | Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sdd-revisar` (Aprovação do plano) · `[APR] … Aprovar PR` (AFK) → `sdd-revisar` (Aprovação do PR) |
@@ -42,14 +42,14 @@ chamada direto:
 | **épico** | funcionalidade com várias histórias ou decisão de produto em aberto | entrevista → PRD → **GATE do PRD** → ELM → fatias → **GATE do backlog** → planejamento → cada fatia na trilha padrão |
 | **sustentação** | trabalho que não muda o repositório, numa categoria da tabela **Sustentação** do `sdd.md` — Atendimento (o cliente pede consulta, extração ou explicação), Implantação, Banco de dados, Infra, Operação, Apoio a outros times. Mudança no repositório sem épico é fatia (rápida ou padrão) da Manutenção | triagem: categoria e entrevista curta → item da categoria (`AT-nnn`, `IM-nnn`…) no backlog e o IB dele no EWM (`[AT-nnn] <pedido>`), filho do IB da categoria (nasce com o 1º item dela, filho da `Sustentação`); a tarefa (`[ATD]`, `[IMPL]`…) nasce quando o item entra numa sprint · Atendimento: `sdd-atender` (assume → banco só leitura e bundle → resposta com "ok" → saldo de horas → desdobramentos) · demais: `sdd-executar` (assumir → registrar → horas → concluir) |
 
-Toda hora trabalhada cabe numa tarefa da sprint: `[ESP]` (especificação do épico), `[DEV]`, `[REV]`, `[VER]` (por
+Toda hora trabalhada cabe numa tarefa da sprint: `[ESP]` (especificação do épico ou da fatia `nova`), `[DEV]`, `[REV]`, `[VER]` (por
 fatia; no AFK só a `[DEV]`), `[APR]` (por gate com aprovação: plano, PR do AFK), as de Sustentação (`[ATD]`,
 `[IMPL]`… — uma por item, filha do IB dele) e `[GB]` (triagem, consolidação, planejamento e sincronização; horas só
 do SM; os créditos de toda sessão do P.O. ou do SM vão num comentário nela — [elm.md](references/elm.md)). **Lançar ≠
 concluir:** lançar horas é registro de empenho, a qualquer momento numa tarefa assumida (inclusive antes de um
 GATE); concluir é da skill do papel quando o trabalho dela termina, perguntando só o saldo —
 `[DEV]` no merge, `[REV]` ao aprovar (depois do push), `[VER]` ao aceitar (depois do push), `[APR]` na aprovação,
-`[ESP]` no GATE do backlog, Sustentação ao finalizar (com o IB do item). **Entrega** (todo papel do HITL):
+`[ESP]` no GATE do backlog (da fatia: quando ela fica `elegivel`), Sustentação ao finalizar (com o IB do item). **Entrega** (todo papel do HITL):
 commit → push → conferir no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`) → só então lançar horas
 ou concluir a tarefa e avisar o próximo — quem vem depois só acha no remoto o que foi publicado.
 
@@ -140,7 +140,7 @@ loop, a fatia para sozinha e o lote segue.
 | saber onde parei / o que fazer agora · fechar a sessão | `sdd-status` |
 | registrar qualquer demanda nova — pedido, defeito, ajuste, pedido de cliente, item ou lote do EWM (triagem) | `sdd-triar` |
 | começar um item registrado, ou "minha próxima tarefa" (o hub diz a skill do papel) | `sdd-iniciar` |
-| especificar um épico (`[ESP]`) e registrar cada sessão com o cliente na tarefa | `sdd-especificar` |
+| especificar um épico ou uma fatia `nova` (`[ESP]`) e registrar cada sessão com o cliente na tarefa | `sdd-especificar` |
 | começar ou retomar o código de uma fatia (`[DEV]`), mergear o PR aprovado | `sdd-desenvolver` |
 | alinhar decisões | `sdd-entrevistar` |
 | escrever o PRD de um épico | `sdd-prd` |
@@ -186,6 +186,9 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   <fase>)` com o caminho e o que faltou (fora de fatia: diga e pare); gravação parcial → o próximo passo retoma pelo
   que está no disco. Nunca siga como se tivesse gravado.
 - Nada inventado: tabela, coluna, regra, id de work item — confirme no código, no banco (somente leitura) ou no ELM.
+- **Pergunte antes de varrer** (regra do `.kiro/steering/sdd.md`): com uma pessoa na sessão, antes de procurar além
+  do que o passo manda ler (jobs irmãos, outras fatias, a base), uma pergunta sobre o que ela já sabe; subagente não
+  pergunta — quem chama passa as **Indicações da pessoa** no pedido. A resposta é ponto de partida, não prova.
 - Toda escrita no ELM, troca de branch, push e alteração de work item só com "sim" de uma pessoa; na base, o agente
   só dá push dos registros de situação, com a conferência dos arquivos
   ([Gravar na base](../sdd-fatiar/references/backlog.md#gravar-na-base)). Merge só do PR aprovado, pelo **Dev

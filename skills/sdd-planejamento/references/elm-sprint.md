@@ -190,7 +190,8 @@ que a triagem não fez no EWM e a `elm` ganha o link, como no espelhamento (§0,
 Para cada linha do `sprint-<nn>.md` (menos as com `saiu da sprint`, que são histórico), com a tabela "Tarefas no EWM"
 de `elm.md`: `elm_criar_wi(tipo tarefa, título, pai, dono, estimativa_h, iteracao)` — só para o papel que o item não
 tem; a que já existe move (topo). Fatia **AFK**: só a `[DEV]`. A `[APR]` não nasce aqui. Item da `## Sustentação`: o
-IB dele muda de iteração (sem `elm` → nasce antes) e a tarefa nasce ou move (§6). Ids na coluna "Tarefa ELM"
+IB dele muda de iteração (sem `elm` → nasce antes) e a tarefa nasce ou move (§6). Fatia `nova` na Especificação:
+a `[ESP] FT-<nnn> Especificação`, filha do item da fatia (o IB dela, no backlog do EWM, muda só a iteração). Ids na coluna "Tarefa ELM"
 (`DEV <id> · REV <id> · VER <id>`) e no `elm` do `backlog.md` (`DEV [<id>](<url>)`).
 
 **A `[GB]`**, na primeira sprint do projeto: a do modo inicial, que está no backlog (§2), move para a iteração da
@@ -339,7 +340,7 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
      com `migrada de <chave>` cujo id aberto está na iteração de uma sprint da cadeia (`<chave>`, a de onde ela migrou
      antes, e assim por diante, pelos `migrada de` dos arquivos fechados): a virada não moveu, e a linha é `EWM: mover
      para esta sprint`; **fechado** → fica onde fechou (sem divergência de iteração; o estado é comparado);
-     `nao_encontrado` → sumiu. A fatia `planejada` com evidência do git (PR, commits ou `status.md` numa branch)
+     `nao_encontrado` → sumiu. A fatia `planejada` com evidência do git (PR, commits ou `status.md` numa branch — fora a branch da especificação (`status.md` em `especificando` ou `especificada`))
      conta como iniciada: volta para a sprint, nunca "sai da sprint";
    - do backlog, na listagem do backlog → o IB (ou a origem) do item, pelo estado (o inicial; os de estrutura —
      `Sustentação`, `Manutenção`, categoria — e as tarefas, só pela iteração) e pela falta de dono
@@ -466,7 +467,7 @@ linha), nunca `arquivo:`.
 | Arquivo | EWM | Solução proposta | Outras |
 |---|---|---|---|
 | `planejada` · `iniciada`, sem merge (o PR mergeado é a linha **Git**, abaixo) | `[DEV]` concluída | EWM: reabrir a `[DEV]` (ela conclui no merge, `sdd-desenvolver` Passo 6) | manter: o Dev confere |
-| `planejada`, sem evidência do git (branch, PR, `status.md` numa branch) | `[DEV]` em andamento | manter: a fatia começa pela `sdd-desenvolver` (com a evidência, as linhas **Git e arquivos**, abaixo) | — |
+| `planejada`, sem evidência do git (branch, PR, `status.md` numa branch; a da especificação não conta) | `[DEV]` em andamento | manter: a fatia começa pela `sdd-desenvolver` (com a evidência, as linhas **Git e arquivos**, abaixo) | — |
 | não terminal | tarefa ou IB descartado | manter: dividir ou cancelar é da `sdd-fatiar` (P.O.) | EWM: reabrir |
 | antes de `concluida` | IB concluído | EWM: reabrir o IB (ele fecha na `sdd-consolidar`) | — |
 | `concluida` | IB aberto | EWM: concluir o IB | — |
@@ -501,7 +502,7 @@ destas linhas grava a situação como a `sdd-desenvolver` grava, e é a sincroni
 |---|---|---|---|
 | antes de `pronta` | PR mergeado na base | arquivo: `pronta (merge <sha> por fora do sdd)`, como no Passo 6 da `sdd-desenvolver` — o `status.md` da base (criado se faltar) com `Fase: pronta` e, no Histórico, `merge do PR <link> por fora do sdd (sha <sha>)`, Lições candidatas `—` e Créditos `—` (ninguém fechou a sessão; a virada aponta); `pronta` no backlog e na linha da sprint; as partes no EWM vão nas linhas das tarefas, logo abaixo (EWM: concluir a `[DEV]`, com as horas já lançadas; EWM: cancelar a `[APR]`, a `[REV]` e a `[VER]` abertas), e `<n>: manter` nesta linha mantém também as delas; depois, a `sdd-consolidar` leva a `concluida` | manter: o Dev registra pelo Passo 6 |
 | `planejada` · `iniciada` (ou `elegivel`: a puxada) | PR aberto, e o `status.md` antes da fase do PR ou sem ele | arquivo: `iniciada`, se ainda não é (como no Passo 4 da `sdd-desenvolver`; a `elegivel`, com a linha `puxada` na sprint), e o `status.md` na fase do PR — `pr-aberto` no HITL, `aguardando-aprovacao-pr` no AFK —, criado se faltar · no AFK, sem a `[APR] FT-<nnn> Aprovar PR` → EWM: criá-la pelo §8 (dono = o Dev Sênior e estimativa que a pessoa der na linha; sem eles, manter), com o id no campo ELM do `status.md` · EWM: na `elegivel` (a puxada), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no Passo 4, item 5, da `sdd-desenvolver`) | — |
-| `planejada` (ou `elegivel`) | branch com commits, sem PR; ou `status.md` numa branch | arquivo: `iniciada (status.md na branch)`, como no Passo 4 — sem `status.md`, ele nasce na branch com `Fase: implementando` · EWM: na `elegivel` (a puxada), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no Passo 4, item 5, da `sdd-desenvolver`) | — |
+| `planejada` (ou `elegivel`) | branch com commits, sem PR; ou `status.md` numa branch — fora a branch da especificação (`status.md` em `especificando` ou `especificada`) | arquivo: `iniciada (status.md na branch)`, como no Passo 4 — sem `status.md`, ele nasce na branch com `Fase: implementando` · EWM: na `elegivel` (a puxada), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no Passo 4, item 5, da `sdd-desenvolver`) | — |
 | não terminal | PR fechado sem merge | manter: o Dev diz — retomar, ou cancelar pela `sdd-fatiar` | — |
 | `sprint-<nn>.md` × `backlog.md` diferentes (a situação do item) | — | arquivo: a mais adiantada pelas evidências (git, EWM, `status.md`), nos dois; sem evidência, manter, com as duas versões na linha | arquivo: a outra |
 
@@ -512,7 +513,8 @@ aberto, branch com commits) fica na branch da fatia (passo 5), com `<AAAA-MM-DD 
 (sincronização)` no Histórico. O da `pronta` do merge por fora fica na base, com `merge do PR <link> por fora do sdd
 (sha <sha>)`.
 
-**Especificação** (a `[ESP]` e o IB do épico):
+**Especificação** (a `[ESP]` e o IB do épico; a `[ESP]` de fatia `nova` segue a mesma tabela, com a fatia no lugar
+do épico — o IB é o item dela, e `cancelada`/`dividida` vale como o épico `cancelado`):
 
 | Arquivo | EWM | Solução proposta | Outras |
 |---|---|---|---|

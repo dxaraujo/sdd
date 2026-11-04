@@ -355,6 +355,16 @@ antes (`elm_indexar_local`); a skill oferece a visualização junto com a indexa
 agente, porque a `sdd-sync` roda na sessão padrão. Requer o `mcp-elm` ≥ 3.6.4 (a tool e os assets do visualizador são
 novos nessa versão).
 
+Na **3.5.5**, (1) **especificação de fatia nova:** a fatia que não passa na DoR (`nova`) ganha a `[ESP] FT-<nnn>`
+na sprint e é especificada pela `sdd-especificar` na branch dela (`status.md` em `especificando` → `especificada`);
+a `sdd-desenvolver` começa dali. (2) **Pergunte antes de varrer:** codificador, pesquisador, revisor e verificador
+não saem mais varrendo código, jobs irmãos, outras fatias e a base sem falar com ninguém: com uma pessoa na sessão,
+antes de procurar além do que o passo manda ler, fazem uma pergunta sobre o que ela já sabe (onde o comportamento
+mora, o análogo a imitar, o irmão a ignorar, como subir o ambiente e a massa). Subagente não pergunta: quem o chama
+pergunta antes e passa as **Indicações da pessoa** no pedido (onde olhar, nunca o que concluir); o `research.md`
+registra se o código as confirmou. A regra vive no steering `sdd.md` e nos agentes: rode "atualizar a configuração
+do sdd" e "atualizar os agentes do sdd" nos projetos. Sem mudança no MCP.
+
 Não use o `/upgrade-agent` (nem `kiro-cli agent upgrade`) nos agentes `sdd-*`: quem os gera é o script da setup
 ("atualizar os agentes do sdd").
 

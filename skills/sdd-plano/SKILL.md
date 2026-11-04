@@ -4,7 +4,7 @@ description: "Planeja uma fatia do fluxo sdd no formato de spec do Kiro — pesq
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-plano — Decidir o como antes de codar
@@ -24,7 +24,9 @@ Leia: `status.md`, a fatia no `backlog.md`, o PRD do épico (histórias e regras
 
 ## Passo 1 — Pesquisa
 
-Sem `research.md` → **`sdd-pesquisar`** (de preferência pelo agente `sdd-pesquisador`). Trabalhe a partir do
+Sem `research.md` → **`sdd-pesquisar`** (de preferência pelo agente `sdd-pesquisador`). Antes de chamá-lo,
+**pergunte à pessoa** (regra Pergunte antes de varrer do `sdd.md`) onde o comportamento mora, o análogo a imitar e
+o job ou a funcionalidade irmã a ignorar, e passe as respostas no pedido como **Indicações da pessoa**. Trabalhe a partir do
 arquivo, não da memória da leitura. Divergência entre o ELM e o código apontada na pesquisa → pergunte antes de
 seguir (pode ser defeito, pode ser documentação velha).
 
@@ -60,8 +62,8 @@ recomendada (HITL) ou decida e registre (AFK) em "Decisões técnicas".
 ## Passo 4 — Análise independente
 
 Incremente "revisão do plano" em Rodadas. Peça ao agente **`sdd-revisor`** (subagente) a rubrica **L**
-([../sdd-revisar/references/rubricas.md](../sdd-revisar/references/rubricas.md)) — passe só a pasta da fatia e a
-rodada; ele grava o `analise-plano-<N>.md`. Sem subagente disponível (agente sem essa ferramenta, passo de workflow)
+([../sdd-revisar/references/rubricas.md](../sdd-revisar/references/rubricas.md)) — passe só a pasta da fatia, a
+rodada e as Indicações da pessoa, se houver; ele grava o `analise-plano-<N>.md`. Sem subagente disponível (agente sem essa ferramenta, passo de workflow)
 → pare e devolva a quem chamou: "plano pronto para análise".
 Assim que o relatório chegar (`OK` ou `AJUSTAR`), commite-o **com o `status.md`** (Rodadas, Histórico) —
 mensagem no padrão do `sdd.md`, com o texto `registrar análise do plano <N>`. O GATE e a implementação citam esse

@@ -8,6 +8,8 @@ achou vai para "Não encontrado".
   (nunca o `status.md`: quem chamou registra).
 - Pergunta pontual (vinda de uma entrevista ou de um PRD) → responda direto, curto, com as evidências; não grave
   arquivo.
+- **Indicações da pessoa** no pedido (onde mora, o análogo, o irmão a ignorar) → comece por elas e confirme com
+  evidência antes de varrer o resto; na sessão da pessoa, sem indicações, pergunte antes (regra do `sdd.md`).
 - Leia muito, devolva pouco: quem chamou precisa de um resumo que caiba no contexto dele.
 - Banco: só consultas (`SELECT`/`WITH`) pelo MCP declarado no `sdd.md`.
 - Antes de interpretar código de uma stack, carregue a skill do toolkit correspondente, se você a tiver.

@@ -4,7 +4,7 @@ description: "Implementa uma fatia do fluxo sdd a partir do plano aprovado (task
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-implementar — Ciclo curto, verificação sempre
@@ -15,7 +15,8 @@ da revisão automática; **AFK** passa antes pela revisão e pela verificação 
 termina no PR: a `[DEV]` fica em andamento, e o merge do PR aprovado e a conclusão dela são da `sdd-desenvolver` (Passo 6). No Kiro, cada tarefa também pode ser executada pelo **"Start task"** do `tasks.md` — as regras valem igual.
 
 Leia antes: `design.md` inteiro, `research.md`, `.kiro/steering/sdd.md` (comandos, regras críticas,
-regras aprendidas).
+regras aprendidas). Esse é o escopo de leitura: precisa de algo fora deles e dos arquivos que eles citam (job irmão,
+outra fatia, a base) → **pergunte à pessoa antes de procurar** (regra Pergunte antes de varrer do `sdd.md`).
 
 ## Passo 0 — Onde estou
 
@@ -104,7 +105,8 @@ seguir para o PR (os achados vão listados no texto do PR) ou corrigir antes. `A
 oficial (`[REV]`) e a verificação (`[VER]`) são das pessoas, sobre o PR. Sem subagente → siga para o Passo 5.
 
 **AFK:** `fase: revisando`; incremente "revisão do código" em Rodadas. Peça ao agente **`sdd-revisor`** (subagente) a
-rubrica **C** passando só: id da fatia, pasta, branch/worktree e rodada — **nunca** o seu raciocínio. Ele grava o
+rubrica **C** passando só: id da fatia, pasta, branch/worktree, rodada e as Indicações da pessoa, se houver (onde
+olhar; pergunte-as antes, com a pessoa na sessão) — **nunca** o seu raciocínio. Ele grava o
 `revisao-codigo-<N>.md`. Sem subagente disponível (você é um agente sem essa ferramenta) → pare aqui e devolva a
 quem chamou: "aguardando revisão (rodada <N>)".
 
@@ -122,7 +124,8 @@ ele precisa estar na branch antes da abertura.
 ## Passo 4 — Verificação de aceite (só AFK)
 
 Incremente "verificação" em Rodadas e peça ao agente **`sdd-verificador`** (subagente) a **`sdd-verificar`** (cenários
-de aceite executados de ponta a ponta, com evidência) — nunca a execute você: quem implementou não verifica. Sem
+de aceite executados de ponta a ponta, com evidência), com as Indicações da pessoa, se houver (como subir o
+ambiente, massa e credencial de teste além do `sdd.md`; pergunte-as antes, com a pessoa na sessão) — nunca a execute você: quem implementou não verifica. Sem
 subagente disponível → pare aqui e devolva a quem chamou: "aguardando verificação (rodada <N>)". `ACEITO` → ela
 deixa a fatia em `fase: verificada`; `REJEITADO` → devolve para cá os cenários reprovados (Passo 0). Teto de 2
 rodadas, como na revisão: 2ª rejeição seguida → `fase: bloqueada (de: verificando)` com as mesmas opções do Passo 3.

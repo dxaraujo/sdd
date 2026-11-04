@@ -4,7 +4,7 @@ description: "Escreve o PRD de um épico ou demanda no fluxo sdd — o quê e o 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-prd — O quê e por quê (épico)

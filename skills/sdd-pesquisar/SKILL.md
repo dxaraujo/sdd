@@ -4,7 +4,7 @@ description: "Pesquisa do código para uma fatia do fluxo sdd, antes de planejar
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-pesquisar — Entender antes de planejar
@@ -30,6 +30,11 @@ Antes de abrir o código, escreva de 3 a 7 perguntas que o plano vai precisar re
 - Que tabela guarda as tentativas? Há coluna de situação?
 - Como os testes de serviço desta camada são escritos (base, fixtures, banco de teste)?
 
+**Pergunte antes de varrer** (regra do `sdd.md`): com uma pessoa na sessão, mostre as perguntas e pergunte, numa
+mensagem só, o que ela já sabe — onde o comportamento mora, o análogo a imitar, o job ou a funcionalidade irmã a
+ignorar, o artefato que já responde. Como subagente, as respostas chegam no pedido como **Indicações da pessoa**.
+Comece o Passo 2 por elas; varra o resto só para o que ficou sem resposta.
+
 ## Passo 2 — Investigar
 
 - Estrutura: steering de estrutura do projeto e `glob` dos módulos envolvidos.
@@ -54,6 +59,9 @@ Antes de abrir o código, escreva de 3 a 7 perguntas que o plano vai precisar re
 
 ## Perguntas e respostas
 1. <pergunta> → <resposta factual> (`caminho/arquivo.ext:42`, `:88-97`)
+
+## Indicações da pessoa
+<o que ela indicou e se o código confirmou (com a evidência) ou desmentiu — ou "nenhuma">
 
 ## Fluxo atual
 <ponto de entrada → … → dado, com arquivo:linha em cada passo>

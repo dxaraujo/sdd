@@ -4,7 +4,7 @@ description: "Painel do fluxo sdd, somente leitura — onde parei e o que fazer 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-status — Onde parei
@@ -130,7 +130,7 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 
 - fase `pr-aberto` sem PR (nem `PR: texto entregue`), ou com tarefas pendentes no `tasks.md`;
 - fatia `elegivel`, `planejada` ou `iniciada` sem ficha (coluna `ficha` `—` ou arquivo inexistente);
-- fatia `elegivel` ou `planejada` com `status.md` numa branch: a `iniciada` não chegou à base (a sincronização da
+- fatia `elegivel` ou `planejada` com `status.md` numa branch (fora o `especificada`, que espera o Dev): a `iniciada` não chegou à base (a sincronização da
   sprint corrige, [elm-sprint.md](../sdd-planejamento/references/elm-sprint.md) §9);
 - fatia `iniciada` sem `status.md` em nenhuma branch nem na base (sessão interrompida antes da branch): vai na
   linha ⏸️ do painel;

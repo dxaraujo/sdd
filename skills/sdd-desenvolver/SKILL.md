@@ -4,7 +4,7 @@ description: "Skill do papel Dev no fluxo sdd — começa ou retoma uma fatia j�
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-desenvolver — Compromisso e início do código
@@ -36,9 +36,15 @@ se o papel pode começar.
 | `FT-nnn` | `<produto>/backlog.md` e a ficha da fatia (coluna `ficha`; de épico, também o PRD que ela cobre) |
 | número do EWM (DF, IB) | a linha do `backlog.md` com esse id na coluna `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP, `DF 4567`); linha de épico ou da `## Sustentação` → as linhas abaixo |
 | tarefa `[DEV] FT-nnn` | a fatia do pai |
-| "próxima fatia" | a `planejada` de maior prioridade da sprint aberta (empate: a mais acima na tabela) sem `status.md` em nenhuma branch; nenhuma → a `elegivel` do topo do backlog, também sem `status.md` em branch ou worktree (puxada) |
+| "próxima fatia" | a `planejada` de maior prioridade da sprint aberta (empate: a mais acima na tabela) sem `status.md` em nenhuma branch (o `especificada` conta como sem); nenhuma → a `elegivel` do topo do backlog, também sem `status.md` em branch ou worktree (puxada) |
 | `[REV]`, `[VER]`, `EP-nn`/`[ESP]`, item de Sustentação pelo tipo de id (`AT-nnn`, `IM-nnn`…: o IB `[AT-nnn]` ou a tarefa `[ATD]`, `[IMPL]`…) | não é deste papel → "use `sdd-iniciar <item>`" e pare (a fatia de Manutenção, `FT-nnn`, é deste papel) |
 | pedido em texto, ou id que não está no backlog | não está registrado → "use `sdd-triar`" e pare |
+
+Fatia com `status.md` da especificação ([status-template.md](references/status-template.md)): `especificando` →
+"use `sdd-especificar FT-<nnn>`" e pare; `especificada` → é **começo**, não retomada: Passos 2–4 na branch dela
+(troque para ela, como abaixo), sem os itens 1, 3 e 4 do Passo 4 (revisor, verificador, branch e pasta vieram da
+especificação; o item 4 só cria o `.config.kiro`) e, no item 5, a `[DEV]` já existe (assumir); a DoR se confere pela ficha da branch; o `status.md` vai a
+`pesquisando`, com `fatia iniciada (sdd-desenvolver)` no Histórico.
 
 Fatia já iniciada (tem pasta em `.kiro/specs/` nesta branch, em worktrees ou em branches remotas —
 `git grep -l '<id>' <ref> -- '.kiro/specs/*/status.md'`) → leia o `status.md` e **retome**: Passo 4, item 5
@@ -87,8 +93,8 @@ Vale para todas as trilhas. Tudo conferido **antes** de gravar na base, criar br
 1. **Definition of Ready** da trilha — a do formato do backlog
    ([../sdd-fatiar/references/backlog.md](../sdd-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel),
    mais os itens próprios do `acordos.md`): a fatia está `elegivel` ou `planejada` e ainda passa (confira agora).
-   - Falhou → `sdd-entrevistar`, `sdd-fatiar` (refinamento) ou `sdd-triar` (retomar a triagem: ficha e `falta:` das
-     fatias sem épico).
+   - Falhou → `sdd-especificar FT-<nnn>`: a fatia `nova` é especificada na `[ESP]` dela, que encaminha à
+     `sdd-entrevistar`, à `sdd-triar` (ficha, sem épico) ou à `sdd-fatiar` (refinamento).
 2. **Responsável.** A coluna `responsavel` do `backlog.md` é outra pessoa → pergunte se ela sabe; trocar é do
    planejamento, não grave aqui. Quem vai implementar é **Júnior** (`senioridade` no `equipe.json`) e a fatia é
    `AFK` → não comece: avise que Júnior implementa sempre em HITL e mande para a **`sdd-planejamento`** (o modo sai

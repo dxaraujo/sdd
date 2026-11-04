@@ -90,12 +90,17 @@ mesmo commit** nos dois arquivos.
 |---|---|---|---|
 | `nova` | registrada (triagem, fatiamento) ou DoR que deixou de valer (`obs` `falta: …`) | `sdd-triar` · `sdd-fatiar` · `sdd-planejamento` (Previsão) | backlog |
 | `elegivel` | passou na [Definition of Ready](#definition-of-ready-o-que-faz-uma-fatia-elegivel) da trilha | `sdd-triar` · `sdd-fatiar` · `sdd-planejamento` | backlog |
-| `planejada` | entrou numa sprint (planejamento, encaixe) | `sdd-planejamento` | backlog (+ `sprint`) · a linha nasce na sprint |
+| `planejada` | entrou numa sprint (planejamento, encaixe, conclusão da especificação da fatia) | `sdd-planejamento` · `sdd-especificar` | backlog (+ `sprint`) · a linha nasce na sprint |
 | `iniciada` | a `sdd-desenvolver` começou: grava na base **e então** cria a branch | `sdd-desenvolver` Passo 4 · no loop, o orquestrador · a sincronização da `sdd-planejamento` ([elm-sprint.md](../../sdd-planejamento/references/elm-sprint.md) §9, com a rede de proteção: PR aberto, branch com commits ou `status.md` numa branch) | backlog (+ `responsavel`, se `—`) · sprint (puxada: + `sprint` no backlog, e a linha nasce aqui, com `puxada`, revisor, verificador e `revisor único`) |
 | `pronta` | PR mergeado | `sdd-desenvolver` Passo 6, na base · a sincronização da `sdd-planejamento` (§9: merge por fora do sdd, Créditos e lições `—`) | backlog · sprint · `status.md` da base |
 | `concluida` | consolidada | `sdd-consolidar` | backlog (+ `concluida-em`) · sprint (+ Créditos) · `status.md` |
 | `dividida` · `cancelada` | desvios (`obs` `substituida-por FT-…` · o motivo) | `sdd-fatiar` · `sdd-triar` (Manutenção) | backlog e a linha da sprint |
 
+- **Especificação da fatia `nova`:** na sprint, a `nova` pode ter linha na seção Especificação (a `[ESP] FT-<nnn>`,
+  `planejada` → `iniciada` → `concluida`, pela `sdd-planejamento` e pela
+  [`sdd-especificar`](../../sdd-especificar/SKILL.md#fatia-nova--a-esp-da-fatia), na branch da fatia, com o
+  `status.md` em `especificando`); ela segue `nova` no backlog até passar na DoR, quando a `[ESP]` conclui e ela fica
+  `planejada` na sprint, com a linha nas Fatias e a `[DEV]` (e a `[REV]` e a `[VER]`, no HITL).
 - **Fase:** o detalhe de `iniciada` é a Fase do `status.md` da fatia
   ([status-template.md](../../sdd-desenvolver/references/status-template.md)); `pronta` e `concluida` só existem no
   `status.md` da base (regra A base prevalece do `status-template.md`).

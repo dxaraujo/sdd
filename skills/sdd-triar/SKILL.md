@@ -4,7 +4,7 @@ description: "Entrada de todo trabalho novo no fluxo sdd — recebe um pedido em
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-triar — Triagem e registro
@@ -46,7 +46,8 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
 (`git grep -l '<id>' <ref> -- '.kiro/specs/*/status.md'`). Achou → mostre a linha e:
 - **fatia sem épico que volta para cá** — `nova` com `falta:`, ficha em `rascunho` ou a aprovar, mudança na
   ficha (pedida pela pessoa ou devolvida pela `sdd-plano` ou pela `sdd-consolidar`) ou trilha que não serve
-  (devolvida pela `sdd-desenvolver`) → **retome a triagem dela**: Passo 2 com o mesmo `FT` e
+  (devolvida pela `sdd-desenvolver` ou pela `sdd-especificar`) → **retome a triagem dela** (fatia com `status.md` em
+  `especificando` e só a ficha a completar → é da `sdd-especificar`, na branch: diga e pare): Passo 2 com o mesmo `FT` e
   a ficha que existe; no Passo 3, só atualize a linha (sem id novo), com a situação pela Volta das
   [Situações](../sdd-fatiar/references/backlog.md#situações) — de `iniciada` em diante ela não muda: avise quem a
   conduz;

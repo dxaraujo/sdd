@@ -7,8 +7,8 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
   da pessoa**.
 - Toda demanda nova (pedido, defeito, item do EWM, pedido de cliente) → `sdd-triar` (triagem, ficha e registro,
   inclusive da Sustentação — `AT-nnn`, `IM-nnn`…; não começa nada).
-- Começar um item registrado → hub `sdd-iniciar`; especificar um épico (`[ESP]`) → `sdd-especificar` (entrevista →
-  PRD → fatias); executar um atendimento (`[ATD]`) → `sdd-atender`; outra tarefa de Sustentação (`[IMPL]`,
+- Começar um item registrado → hub `sdd-iniciar`; especificar um épico ou uma fatia `nova` (`[ESP]`) → `sdd-especificar` (entrevista →
+  PRD → fatias; da fatia, até a DoR); executar um atendimento (`[ATD]`) → `sdd-atender`; outra tarefa de Sustentação (`[IMPL]`,
   `[BD]`, `[INF]`, `[OPE]`, `[EXT]`: iniciar, registrar, horas, concluir) → `sdd-executar`; sprint, roadmap, review, virada →
   `sdd-planejamento`.
 - Revisão independente do PRD → subagente `sdd-revisor` (rubrica P).

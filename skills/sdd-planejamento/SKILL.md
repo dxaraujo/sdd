@@ -4,7 +4,7 @@ description: "Planejamento ágil do projeto no fluxo sdd, ajustado a times que t
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
 # sdd-planejamento — Planejar o fluxo, não só o calendário
@@ -94,7 +94,7 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
    - **vazão**: média de fatias concluídas nas últimas 3 sprints, incluídas as puxadas (primeira sprint: comece
      com 1 fatia por dev por semana e ajuste na virada), e o lead time médio por fatia;
    - **especificação**: horas de especificação da sprint (`horas-especificacao-semana`); zero no time inteiro e
-     épico a especificar no topo → avise antes de seguir (sem horas não há `[ESP]`: alguém ganha horas de
+     épico ou fatia `nova` a especificar no topo → avise antes de seguir (sem horas não há `[ESP]`: alguém ganha horas de
      especificação no `equipe.json`, ou o épico fica para depois);
    - **reserva (Sustentação + retrabalho)**: o percentual do `acordos.md` sobre as **horas da sprint do time
      inteiro** (todos os ativos, menos ausências), descontado antes de selecionar fatias. Dentro dela entram primeiro
@@ -105,13 +105,15 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
 2. **Especificação:** épicos `elegivel` que entram em especificação nesta sprint (do `roadmap.md`, os "a
    descobrir" do topo, e os do `backlog.md` que o roadmap ainda não tem — proponha a posição deles); épico `novo`
    no topo → confira a Definition of Ready do épico e grave `elegivel` se passa, senão aponte o que falta. Um
-   `[ESP]` por épico, com responsável e horas previstas dentro da capacidade de especificação.
+   `[ESP]` por épico, com responsável e horas previstas dentro da capacidade de especificação. Entram aqui também
+   as fatias `nova` do topo (passo 3): uma `[ESP] FT-<nnn>` por fatia, na mesma capacidade.
 3. **Previsão** (não compromisso): confira a [Definition of Ready](../sdd-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
    das fatias `nova` e `elegivel` do topo e grave `elegivel` nas que passam (ou `nova`, com `obs` `falta: <o quê>`,
    nas que deixaram de passar). Entram as `elegivel` — de épico e de Manutenção — pela `prioridade` (crítica →
    baixa, `—` no fim; no empate, a ordem da linha no `backlog.md`), respeitando `bloqueada-por` — a fatia só entra
    se as dependências entram antes ou já estão `pronta` ou `concluida`. Pare ao atingir a menor das capacidades.
-   Fatia `nova` no topo → aponte o que falta (decisão, PRD, fatiar) antes de pular para a próxima. Cada fatia ganha
+   Fatia `nova` no topo → aponte o que falta (decisão, PRD, fatiar) e proponha-a na Especificação (passo 2) antes
+   de pular para a próxima. Cada fatia ganha
    **responsável**, e o modo final sai da senioridade dele ([Modo pela senioridade](#modo-pela-senioridade)). Cada fatia **HITL** ganha
    **revisor** — um **Dev Sênior**, pela [regra do revisor](#modo-pela-senioridade) — e **verificador** (não quem
    implementa), e a soma das revisões e verificações cabe nas horas de revisão de cada um; fatia **AFK** não tem
@@ -137,14 +139,14 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
    Fatias
    | Prioridade | FT | Título | Origem | Tam. | Modo | Depende de | Responsável | Revisor | Verificador |
    Especificação
-   | EP | Responsável | Horas previstas |
+   | Item (EP ou FT) | Responsável | Horas previstas |
    Reserva (Sustentação + retrabalho): <h>h (<p>% da sprint) · retrabalho migrado <x>h · itens <AT-…> <y>h · livre <z>h
    Capacidade: revisão <h>h (usa <x>h) · especificação <h>h (usa <x>h) · vazão prevista <n> fatias · lead time médio <d> dias · HITL <h>h
    Próximas a puxar (fora da previsão, na ordem): <FT…>
    ```
 7. "ok" → grave `sprints/<pai>/sprint-<nn>.md` (com `**Power sdd:**` = o `metadata.version` desta skill; as linhas
    novas nascem `planejada`, e as da Sustentação, `aberto`) e, no `backlog.md`, `status` `planejada` (no épico da
-   `[ESP]`, `planejado`), `sprint`, `responsavel` e o `modo` final, pelo bloco
+   `[ESP]`, `planejado`; a fatia da `[ESP]` segue `nova`, só a `elm` ganha `ESP <id>`), `sprint`, `responsavel` e o `modo` final, pelo bloco
    [Gravar na base](../sdd-fatiar/references/backlog.md#gravar-na-base), e **publique sempre no EWM** ([references/elm-sprint.md](references/elm-sprint.md) §1–4 e §6), para a sprint e o EWM ficarem iguais. Sem o MCP `elm` ou com
    falha, a coluna "Tarefa ELM" fica `pendente` e é publicada depois. O `sprint-<nn>.md` gravado antes do §1 — sem o
    MCP, com falha ou sessão parada antes da publicação; e o da próxima, no passo 4 da virada — leva no cabeçalho
@@ -201,7 +203,7 @@ estado inicial). Mostra **uma tabela**, agrupada por item, com todas as divergê
 solução proposta: "ok" aplica tudo como proposto, ou a pessoa ajusta uma ou mais linhas (`<n>: arquivo`,
 `<n>: EWM`, `<n>: manter`; na por fora, o tipo e o título). A situação da fatia e do épico nunca muda pelo estado do
 EWM, só pela skill que a causa ou pela evidência do git (PR mergeado → `pronta`; PR aberto, branch com commits ou
-`status.md` numa branch → `iniciada`); na Sustentação, o arquivo recebe o EWM. As linhas que mudam o escopo (o item que sai
+`status.md` numa branch → `iniciada`, fora a branch da especificação: `status.md` em `especificando` ou `especificada`); na Sustentação, o arquivo recebe o EWM. As linhas que mudam o escopo (o item que sai
 da sprint, o encaixe, o épico que entra com a `[ESP]`) esperam o "sim" do **P.O.** — sem ele, ficam `manter` nesta
 rodada —, e as `encaixe` seguem depois, uma a uma, para o Encaixe (abaixo). Sprint não publicada
 (`**Publicação no EWM:** pendente`) → a primeira linha cria a iteração e o plano (§1), e a listagem vem depois do

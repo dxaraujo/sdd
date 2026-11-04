@@ -15,6 +15,14 @@ Começar um item registrado: hub `sdd-iniciar` (diz a skill do papel: `sdd-espec
   e, na resposta, `sdd-status` › Fechar a sessão, item 4. A leitura é sempre depois de uma resposta da pessoa: o Kiro
   só grava o consumo do turno quando ele termina.
 - Nada inventado (confirme no código, no banco — só leitura — ou no ELM). Nunca apague nem afrouxe teste.
+- **Pergunte antes de varrer:** com uma pessoa na sessão, antes de procurar além do que o passo manda ler (código
+  fora da forma do programa, jobs ou funcionalidades irmãs, artefatos de outras fatias, a base), faça **uma**
+  pergunta: o que você vai procurar (até 5 itens) e o que ela pode encurtar — onde o comportamento mora, o análogo a
+  imitar (e o irmão a ignorar), o artefato que já responde, como subir o ambiente e a massa. Não pergunte o que o
+  `sdd.md`, o plano ou a pasta da fatia já dizem. A resposta é ponto de partida, não prova: confirme e cite a
+  evidência. "Não sei" ou "pode procurar" → procure. Subagente não pergunta: quem o chama pergunta antes e passa as
+  respostas no pedido como **Indicações da pessoa** (caminhos e nomes — onde olhar, nunca o que concluir); sem
+  elas, procure como antes. `AUTONOMO=true` → sem pergunta.
 - **Falha de escrita:** pasta inexistente → crie; permissão negada ou confirmação recusada → `fase: bloqueada (de:
   <fase>)` com o caminho e o que faltou (fora de fatia: diga e pare); gravação parcial → o próximo passo retoma pelo
   que está no disco. Nunca siga como se tivesse gravado.
@@ -124,7 +132,7 @@ Na worktree do `sdd-loop`: `cd .kiro/local/wt/<ft> && <comando>`. Falha de ambie
 | Pontos P/M/G no EWM | `<não | 2 · 3 · 5>` (opcional; o planejamento prevê pela vazão) |
 | Critérios de aceite no IB | `<nome do campo em ccm.tipos.ib.campos do pa | descrição>` |
 | IB de defeito | `<campo = valor de correção (ex.: Categoria = Correção) | —>` (os demais padrões estão no `pa`) |
-| Tarefas (títulos padrão; editáveis à mão) | `[ESP] EP-<nn> Especificação` · `[DEV] FT-<nnn> Implementar` · `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` · `[APR] FT-<nnn> Aprovar plano` · `[APR] FT-<nnn> Aprovar PR` · `<prefixo da categoria> <ID> <pedido>`, filha do IB do item `[<ID>] <pedido>` (ex.: `[ATD] AT-012 <pedido>` sob `[AT-012] <pedido>`) · `[GB] Gerenciamento do backlog` |
+| Tarefas (títulos padrão; editáveis à mão) | `[ESP] EP-<nn> Especificação` · `[ESP] FT-<nnn> Especificação` (fatia `nova`) · `[DEV] FT-<nnn> Implementar` · `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` · `[APR] FT-<nnn> Aprovar plano` · `[APR] FT-<nnn> Aprovar PR` · `<prefixo da categoria> <ID> <pedido>`, filha do IB do item `[<ID>] <pedido>` (ex.: `[ATD] AT-012 <pedido>` sob `[AT-012] <pedido>`) · `[GB] Gerenciamento do backlog` |
 | `CT.csv` (colunas na ordem do template do ETM) | `<Tipo=Caso de Teste · Resumo · Responsável · Status=<inicial> · Categoria · Planejado para · Descrição>` |
 
 ## Sustentação

@@ -1,13 +1,13 @@
 ---
 name: sdd-especificar
-description: "Skill do papel Especificador no fluxo sdd — conduz a especificação de um épico (EP-nn) a partir da tarefa [ESP]: assume a [ESP] no EWM (o épico fica iniciado na base), monta a pasta de trabalho local fora do git (.kiro/local/especificacao/), encaminha pela Fase do status.md do épico (sdd-entrevistar → sdd-prd → GATE do PRD → sdd-fatiar), leva o PRD aprovado para a base, conclui a [ESP] depois do GATE do backlog e, no fim de cada sessão com o cliente, registra o levantamento na [ESP] (comentário + anexos .md com a última versão de cada artefato) e lança as horas da sessão. Outra máquina retoma baixando os anexos. Use em \"especificar o EP-03\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
+description: "Skill do papel Especificador no fluxo sdd — conduz a especificação de um épico (EP-nn) ou de uma fatia nova (FT-nnn que não passa na DoR, de épico ou de Manutenção) a partir da tarefa [ESP]: assume a [ESP] no EWM (o épico fica iniciado na base), monta a pasta de trabalho local fora do git (.kiro/local/especificacao/), encaminha pela Fase do status.md do épico (sdd-entrevistar → sdd-prd → GATE do PRD → sdd-fatiar), leva o PRD aprovado para a base, conclui a [ESP] depois do GATE do backlog e, no fim de cada sessão com o cliente, registra o levantamento na [ESP] (comentário + anexos .md com a última versão de cada artefato) e lança as horas da sessão. Outra máquina retoma baixando os anexos. Na fatia nova, a [ESP] FT-nnn: cria a branch e o status.md (fase especificando), atualiza a ficha e o status.md, encaminha o que falta (sdd-entrevistar, sdd-prd) e, na conclusão, planeja a fatia na sprint e cria a [DEV] (e a [REV] e a [VER] só no HITL, pela senioridade de quem implementa); a sdd-desenvolver começa dali. Use em \"especificar o EP-03\", \"especificar a FT-003\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.0"
+  version: "3.5.5"
 ---
 
-# sdd-especificar — Especificação de épico
+# sdd-especificar — Especificação de épico e de fatia nova
 
 > **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
 > power instalado (ex.: `~/.kiro/powers/installed/sdd/skills/sdd-especificar/`), não no projeto: abra-os por esse
@@ -25,7 +25,9 @@ Leia antes: `.kiro/steering/sdd.md`. Sem ele → ofereça a **`sdd-setup`** ("co
 | Entrada | Como ler |
 |---|---|
 | `EP-nn` ou `[ESP] EP-nn` | linha do épico em `## Épicos` do `backlog.md` da base; a `[ESP]` pela coluna `elm` (`ESP <id>`) ou pela Tarefa ELM da seção Especificação do `sprint-<nn>.md` |
-| `FT-nnn`, `[DEV]`, `[REV]`, `[VER]`, `AT-nnn` | não é deste papel → "use `sdd-iniciar <item>`" e pare |
+| `FT-nnn` `nova` no `backlog.md`, `[ESP] FT-nnn` ou `status.md` em `especificando` | → [Fatia `nova`](#fatia-nova--a-esp-da-fatia) |
+| `FT-nnn` com `status.md` em `especificada` | especificação concluída → "use `sdd-desenvolver FT-<nnn>`" e pare |
+| `FT-nnn` em outra situação, `[DEV]`, `[REV]`, `[VER]`, `AT-nnn` | não é deste papel → "use `sdd-iniciar <item>`" e pare |
 | pedido em texto, ou épico fora do backlog | não está registrado → "use `sdd-triar`" e pare |
 
 **DoR do épico:** a do [`backlog.md`](../sdd-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
@@ -168,8 +170,70 @@ Situação da linha do épico na seção Especificação ([situações](../sdd-f
 `planejada` (`sdd-planejamento`), `iniciada` (Passo 2) e `concluida` (GATE do backlog), estas duas gravadas aqui;
 `cancelada` com o épico cancelado (`sdd-fatiar`).
 
+## Fatia `nova` — a `[ESP]` da fatia
+
+A fatia que não passa na DoR (`nova`, `obs` `falta: …`), de épico ou de Manutenção, é especificada na **branch
+dela**: aqui nascem a branch, a pasta `.kiro/specs/<ft>-<slug>/` e o `status.md` (Fase `especificando`), e a
+`sdd-desenvolver` começa dali. A `[ESP] FT-<nnn> Especificação` (filha do item da fatia,
+[elm.md](../sdd/references/elm.md)) registra as sessões; esta skill atualiza o `status.md` e a ficha.
+
+1. **Assumir** (só com a fatia na seção Especificação do `sprint-<nn>.md` aberto, ou puxada para ela):
+   1. **Base**, pelo bloco [Gravar na base](../sdd-fatiar/references/backlog.md#gravar-na-base): a linha da fatia na
+      Especificação com Situação `iniciada` (sem linha → nasce agora: quem assume, Horas previstas `—`, `ESP <id>` ou
+      `pendente`, Observação `puxada`); no `backlog.md` a fatia segue `nova` (a `elm` ganha `ESP <id>`, se faltava).
+      Commit `FT-<nnn> iniciar especificação`. Nenhuma sprint aberta → ofereça a `sdd-planejamento` e não comece.
+   2. **EWM**: `elm_transicao(id, "assumir")`, com "sim". Sem `[ESP]` → ofereça a `sdd-planejamento` (seção
+      Especificação); a pessoa pode seguir sem tarefa, com `ELM pendente [<chave>]: [ESP] FT-<nnn>` no Histórico.
+   3. **Branch**, como o Passo 4, item 3, da [`sdd-desenvolver`](../sdd-desenvolver/SKILL.md) (sugira o nome e
+      aguarde; `git fetch` e `git switch -c <branch> origin/<base>`, com o registro do item 1 já publicado).
+   4. **Pasta** `.kiro/specs/<ft>-<slug>/` com o `status.md` do
+      [status-template.md](../sdd-desenvolver/references/status-template.md): Fase `especificando`, Responsável =
+      quem especifica, Modo o do `backlog.md`, ELM `ESP <id>` (e o item da fatia), Histórico
+      `<AAAA-MM-DD HH:MM> — especificação iniciada (sdd-especificar)`. Commit e push da branch (no agente
+      `sdd-produto`, que não faz push, entregue o comando pronto).
+
+   Já `especificando` (retomada) → troque para a branch (Passo 1 da `sdd-desenvolver`: worktree, alterações locais)
+   e siga do item 2.
+2. **Encaminhar pelo `falta:`** da linha (confira a DoR da trilha de novo: pode já ter mudado):
+   ```
+   🧭 FT-<nnn> — <título> · [ESP] <id | pendente> · fase especificando · falta: <…>
+   Branch: <…> · Pasta: .kiro/specs/<ft>-<slug>/
+   Próximo: <esta skill | skill>
+   ```
+   | Falta | Quem faz |
+   |---|---|
+   | ficha (incompleta, em rascunho, como verificar) | **esta skill**, na branch: a ficha no formato da trilha ([ficha.md](../sdd-triar/references/ficha.md)), sem dado inventado; Manutenção → a aprovação do P.O. registrada na ficha |
+   | decisão em aberto | **`sdd-entrevistar`** (Manutenção: seção Decisões da ficha; de épico: `.kiro/specs/<ft>-<slug>/decisoes.md`) |
+   | regra do PRD (de épico) | **`sdd-prd`** (mudança do PRD, na base) |
+   | trilha que não serve, vira épico, dividir | **`sdd-triar`** (Manutenção) · **`sdd-fatiar`** (de épico) |
+
+   Artefatos que vão ao ELM (requisitos, casos de teste) ficam em `.kiro/specs/<ft>-<slug>/elm/`. A skill chamada não
+   toca na `[ESP]` nem no `status.md`: terminada a sessão dela, volte aqui.
+3. **Fechar a sessão** — como o Passo 5, sem anexos (os artefatos estão na branch): a linha de créditos na seção
+   Créditos do `status.md` (Papel `especificação`), comentário na `[ESP]` (resumo, decisões novas, dúvidas) e as
+   horas da sessão (pergunte; nunca estime), numa confirmação; commit e push da branch.
+4. **Concluir** — a fatia passa na DoR da trilha; antes, feche a sessão (item 3), para os créditos fecharem a soma:
+   1. **Quem implementa** — pergunte (sugira pelo `equipe.json`). O modo sai da senioridade dele
+      ([Modo pela senioridade](../sdd-planejamento/SKILL.md#modo-pela-senioridade) da `sdd-planejamento`); `HITL` →
+      o revisor (Dev Sênior, pela mesma regra) e o verificador (não quem implementa).
+   2. **EWM**, numa confirmação: a `[ESP]` com o saldo de horas (`elm_horas(id)` → `elm_lancar_horas`) e
+      `elm_transicao(id, "concluir")`; as tarefas pelo §4 do [elm-sprint.md](../sdd-planejamento/references/elm-sprint.md)
+      — a `[DEV]` (dono = quem implementa; a estimativa, pergunte) e, só no `HITL`, a `[REV]` e a `[VER]` (revisor e
+      verificador). Sem o MCP → `ELM pendente` no Histórico do `status.md`.
+   3. **Base** (Gravar na base): no `backlog.md`, `status` `planejada`, `sprint` (a aberta), `responsavel`, `modo`
+      (diferente do registrado → `obs` `modo pela senioridade (<login>)`) e a `obs` sem o `falta:`; no
+      `sprint-<nn>.md`, a linha da Especificação `concluida` com os Créditos (a soma das linhas `especificação` do
+      `status.md`) e a linha da fatia nasce nas Fatias, `planejada`, com responsável, revisor e verificador (AFK:
+      `—`), Tarefa ELM (os ids do item 2, ou `pendente`) e a Observação `especificada na sprint`. Commit `FT-<nnn> concluir especificação`.
+   4. **`status.md`**, na branch: Fase `especificada`, Responsável = quem implementa, Modo, ELM com os ids
+      (`ESP <id> · DEV <id> · REV <id> · VER <id>`), Histórico `especificação concluída · modo <…> · dev <login>`;
+      commit e push.
+   5. Próximo, e pare: `sdd-desenvolver FT-<nnn>` (agente `sdd-codificador`).
+
 ## Regras
 
+- Fatia `nova`: o trabalho (ficha, decisões, `elm/`, `status.md`) mora na branch dela e chega à base com o merge; a
+  base só recebe a situação, ao assumir e ao concluir.
 - Até o GATE do PRD, nada da especificação vai para a base — só a situação do Passo 2: o registro é a `[ESP]`
   (comentários e anexos), atualizado ao fechar cada sessão.
 - Nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é `em aberto`.
