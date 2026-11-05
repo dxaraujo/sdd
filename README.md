@@ -90,7 +90,7 @@ Fontes no fim deste arquivo.
 | `sdd-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
 | `sdd-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
 | `sdd-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sdd-produto`, créditos num comentário na `[GB]`; horas só do SM): drift marcado pela revisão e pela verificação, ELM as-built (requisitos, ET, casos de teste criados no ETM), ADRs do PR, glossário, conclusão |
-| `sdd-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local e gera a visualização offline dele (`explorar.html`, galáxias 3D) |
+| `sdd-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local e gera a visualização dele (`explorar.html`, grafo 3D) |
 | `sdd-loop` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
 | `sdd-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |
 
@@ -110,7 +110,7 @@ de `skills/sdd-setup/assets/`:
 | `.kiro/sdd/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
 | pasta do produto (proposta pela setup; padrão `.kiro/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.kiro/local/` (fora do git) |
 
-O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.4) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
+O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.7) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
 project area, gravado pela `sdd-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
 `elm_ligar`, `elm_publicar_req`…): a skill do passo passa só o caminho do projeto, os ids e o conteúdo, e recebe
 `{"ok": …}`. Regras comuns em [`skills/sdd/references/elm.md`](skills/sdd/references/elm.md). Leituras liberadas nos
@@ -166,7 +166,7 @@ processo do projeto exige algum deles, a skill do passo entrega o roteiro manual
   bundle do ELM (`elm_*_local`, nunca lendo os arquivos), e [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/), que lista, lê e abre os PRs (merge
   requests do GitLab) — credencial em `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` e `token`). Repositório
   fora do GitLab, ou sem a credencial → o fluxo entrega título e descrição do PR, e a pessoa o abre.
-- Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sdd-setup`; MCP de consulta ao banco (somente leitura);
+- Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` (com `provider_url` e `provider_api_key` para a busca local do bundle) e o `pa` gerado pela `sdd-setup`; MCP de consulta ao banco (somente leitura);
   MCP de browser/Playwright para verificar frontend; Kiro Workflows habilitado (IDE: `kiroAgent.workflows.enabled`;
   CLI: `chat.enableWorkflows`) para as receitas experimentais.
 - Toolkits da stack do projeto (opcional — sem eles os agentes dependem do steering e do código vizinho).
@@ -369,6 +369,12 @@ Na **3.5.7**, (1) o `pa_<nome>.json` passa a ser gravado em `.kiro/config/elm/` 
 mais em `.kiro/config/sdd/`; a `sdd-setup` move os que achar no lugar antigo (rode "atualizar a configuração do sdd"
 ou faça o `git mv` à mão). (2) A descrição da `sdd-especificar` passava de 1024 caracteres e a skill era pulada pelo
 Kiro: encurtada (reinstale o power).
+
+Na **3.5.8**, as skills acompanham o `mcp-elm` 3.6.7 (mínimo agora): a busca local, a indexação e a visualização do
+bundle usam só a API de embeddings (`provider_url` e `provider_api_key` no `elm.properties`; o modelo local saiu) —
+a `sdd-setup` avisa quando o `elm_status` volta `embedder: null`, e a `sdd-sync` explica o erro `config`. O
+`explorar.html` passa a ser um grafo 3D (links dos artefatos ou vizinhos semânticos) com as libs do CDN — abrir
+exige internet; saem as galáxias e a vista 2D.
 
 Não use o `/upgrade-agent` (nem `kiro-cli agent upgrade`) nos agentes `sdd-*`: quem os gera é o script da setup
 ("atualizar os agentes do sdd").

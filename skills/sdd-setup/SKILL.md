@@ -4,7 +4,7 @@ description: "Wizard de 9 etapas, em português do Brasil e em cartões padroniz
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.7"
+  version: "3.5.8"
 ---
 
 # sdd-setup — Configurar o fluxo no projeto

@@ -22,7 +22,7 @@ Toda tool devolve `{"ok":true,"dados":{…}}` ou `{"ok":false,"erro":{"codigo","
 | ligar (implementa, rastreia, afeta, testado por, valida, depende, relacionado) | `elm_ligar` |
 | buscar · ler · publicar requisito | `elm_buscar_req` · `elm_ler_req` · `elm_publicar_req` |
 | buscar · ler · listar requisito local (bundle) + indexar | `elm_buscar_req_local` · `elm_ler_req_local(id ou path)` · `elm_listar_req_local` · `elm_indexar_local` |
-| visualizar o bundle (explorar.html offline, galáxias 3D) | `elm_explorar_local` (skill `sdd-sync`; exige o índice: `precondicao` com `campo: "indice"` → `elm_indexar_local`) |
+| visualizar o bundle (explorar.html, grafo 3D) | `elm_explorar_local` (skill `sdd-sync`; exige o índice: `precondicao` com `campo: "indice"` → `elm_indexar_local`) |
 | criar caso de teste (já ligado) | `elm_criar_ct` |
 | iteração e plano da sprint | `elm_iteracao` |
 | backlog do produto (onde os itens nascem; `iteracao: "backlog"`) | `elm_backlog` |
@@ -39,10 +39,12 @@ Consulta de requisito: **local primeiro** (`elm_buscar_req_local`, `elm_ler_req_
 bundle. Sem nada baixado — erro `nao_encontrado` com `campo: "bundle"` — diga isso à pessoa, pesquise no ELM remoto
 (`elm_buscar_req`/`elm_ler_req`) e ofereça a `sdd-sync` para baixar. Sem o ELM remoto (pesquisador) → registre que
 não há bundle e indique a `sdd-sync`. `indexando: true, restantes: n` → a busca usou o que já estava indexado; a indexação
-segue em segundo plano (`elm_indexar_local` mostra o progresso).
+segue em segundo plano (`elm_indexar_local` mostra o progresso). A busca local, a indexação e a visualização usam
+a API de embeddings do `elm.properties` (`provider_url`, `provider_api_key`; não há modelo local): sem elas, erro
+`config` — peça a configuração e o reinício do MCP. Trocar o modelo exige reindexar.
 
-Visualização do bundle: `elm_explorar_local` (skill `sdd-sync`) gera o `explorar.html` offline na pasta do bundle — o
-bundle em galáxias num HTML único (vista 3D ou 2D, busca e filtros); lê o índice em modo somente leitura, sem índice →
+Visualização do bundle: `elm_explorar_local` (skill `sdd-sync`) gera o `explorar.html` na pasta do bundle — grafo 3D
+(links dos artefatos ou vizinhos semânticos; as libs vêm do CDN, abrir exige internet); lê o índice em modo somente leitura, sem índice →
 `precondicao` com `campo: "indice"`: indexe antes (`elm_indexar_local`).
 
 Erro `config` → o `pa` está incompleto: diga o campo e ofereça a `sdd-setup`. `credencial` → peça a configuração do

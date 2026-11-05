@@ -42,7 +42,9 @@ transição ou o lançamento de horas. Por isso aqui **não vale "padrão sem pe
 
 Não suponha rede: o ELM pode responder sem VPN mesmo quando o GitLab ou o banco não respondem — teste e diga o que
 respondeu. `elm_status(projeto=<raiz>)` (sem `pa` ainda, `faltando` vem preenchido — normal): erro `credencial` → peça o `~/.config/mcp-elm/elm.properties` (`server`, `user`,
-`password`; você não lê nem grava esse arquivo) e pare. Pergunte um trecho do nome da PA do EWM e se o DOORS Next e o
+`password`; você não lê nem grava esse arquivo) e pare. `embedder: null` → sem a API de embeddings: a busca local do
+bundle não funciona até a pessoa pôr `provider_url` e `provider_api_key` no mesmo arquivo e reiniciar o MCP — avise e
+siga (o `pa` não depende disso). Pergunte um trecho do nome da PA do EWM e se o DOORS Next e o
 ETM usam o mesmo nome (ou qual) → `elm_setup_descobrir(ccm, rm?, qm?)`. Mostre as PAs achadas de cada um e confirme
 qual é (nenhuma no ETM → sem `qm`: o fluxo não cria caso de teste no ETM, o `CT.csv` fica).
 

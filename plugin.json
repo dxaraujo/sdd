@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "sdd",
-  "version": "3.5.7",
+  "version": "3.5.8",
   "description": "Engenharia agêntica orientada a especificação, com o IBM ELM como fonte oficial da documentação (MCP mcp-elm incluído: work items, horas, requisitos, casos de teste e sincronismo do bundle) e planejamento ágil Scrumban: triagem e registro de toda demanda no backlog (épicos, fatias e sustentação), com a situação de cada item gravada no backlog e na sprint por quem a muda, entrevista de alinhamento, PRD, fatias verticais AFK/HITL, plano no formato de spec do Kiro, TDD com backpressure, revisão e verificação independentes, PR lido por uma pessoa, consolidação no ELM e aprendizado composto. A setup cria no projeto os agentes e liga a cada um as skills escolhidas, inclusive as dos toolkits de stack (backend, batch, frontend).",
   "author": {
     "name": "Daniel Xavier Araújo",
@@ -92,7 +92,7 @@
   "extensions": {
     "io.github.dxaraujo.sdd": {
       "requires": {
-        "pypi:mcp-elm": ">=3.6.4"
+        "pypi:mcp-elm": ">=3.6.7"
       },
       "note": "Projeto com ELM: a sdd-setup grava .kiro/config/elm/pa_<nome>.json, que o MCP elm lê."
     }
