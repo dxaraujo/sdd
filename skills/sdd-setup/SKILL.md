@@ -4,7 +4,7 @@ description: "Wizard de 9 etapas, em português do Brasil e em cartões padroniz
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.5"
+  version: "3.5.7"
 ---
 
 # sdd-setup — Configurar o fluxo no projeto
@@ -153,7 +153,9 @@ mais longa (10 blocos) e o que ela decide.
 2. **Glossário** (padrão `docs/glossario.md`) e **ADRs** (padrão `docs/adr`, sem barra no fim) — use os que já
    existirem; não existindo, o padrão é criá-los (linhas 2 e 3 do W4). A pessoa recusou na tabela → registre
    "não há" e remova dos agentes as regras e linhas que os citam (`{{GLOSSARIO}}`, `{{ADR}}`).
-3. **ELM** — o MCP `elm` vem com o power. `.kiro/config/sdd/pa_*.json` no repositório (um por project area)?
+3. **ELM** — o MCP `elm` vem com o power. `.kiro/config/elm/pa_*.json` no repositório (um por project area)?
+   - Há `pa_*.json` em `.kiro/config/sdd/` (lugar antigo, antes da 3.5.7) → mova para `.kiro/config/elm/` (`git mv`),
+     que é onde o MCP `elm` lê, e siga daqui com eles.
    - Não há e a pessoa diz que o projeto não usa ELM → `Usa ELM: não` (o fluxo funciona igual; os ids vêm do
      `backlog.md`).
    - **Gerar o `pa` — guiado, um bloco por vez:** siga [references/elm-pa.md](references/elm-pa.md) (credencial e

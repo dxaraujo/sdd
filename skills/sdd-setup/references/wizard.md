@@ -310,7 +310,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 |---|---|
 | `.kiro/steering/sdd.md` | <criar | alterar — diff abaixo | manter> |
 | `.kiro/config/sdd/agentes.json` | rascunho gravado (o Kiro não carrega) |
-| `.kiro/config/sdd/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
+| `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
 | `.kiro/agents/sdd-*.json` (6) | <criar | alterar — diff abaixo> |
 | `.kiro/hooks/sdd.json` | <criar | alterar | ➖> |
 | `.kiro/workflows/sdd-*.workflow.json` (2) | <criar | alterar | ➖> |

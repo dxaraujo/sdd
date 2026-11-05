@@ -2,7 +2,7 @@
 
 O ELM é o registro oficial: o que o sistema faz (DOORS Next), o que está sendo feito (EWM) e como foi testado (ETM).
 O repositório guarda as propostas de mudança e o histórico. Quem fala com o ELM é o MCP **`elm`** do power: ele lê
-o `.kiro/config/sdd/pa_<nome>.json` (um por project area; gravado pela `sdd-setup`) — tipos, campos, padrões,
+o `.kiro/config/elm/pa_<nome>.json` (um por project area; gravado pela `sdd-setup`) — tipos, campos, padrões,
 pastas, ids. **A skill passa só `projeto` (caminho absoluto da raiz do repositório), `pa` (quando o projeto tem
 mais de um) e os ids e o conteúdo.** Nunca repasse campos, URLs ou ids do `pa`: o MCP resolve.
 

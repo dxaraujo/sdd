@@ -4,7 +4,7 @@ description: "Planeja uma fatia do fluxo sdd no formato de spec do Kiro — pesq
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.5"
+  version: "3.5.7"
 ---
 
 # sdd-plano — Decidir o como antes de codar

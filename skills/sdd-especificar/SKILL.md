@@ -1,10 +1,10 @@
 ---
 name: sdd-especificar
-description: "Skill do papel Especificador no fluxo sdd — conduz a especificação de um épico (EP-nn) ou de uma fatia nova (FT-nnn que não passa na DoR, de épico ou de Manutenção) a partir da tarefa [ESP]: assume a [ESP] no EWM (o épico fica iniciado na base), monta a pasta de trabalho local fora do git (.kiro/local/especificacao/), encaminha pela Fase do status.md do épico (sdd-entrevistar → sdd-prd → GATE do PRD → sdd-fatiar), leva o PRD aprovado para a base, conclui a [ESP] depois do GATE do backlog e, no fim de cada sessão com o cliente, registra o levantamento na [ESP] (comentário + anexos .md com a última versão de cada artefato) e lança as horas da sessão. Outra máquina retoma baixando os anexos. Na fatia nova, a [ESP] FT-nnn: cria a branch e o status.md (fase especificando), atualiza a ficha e o status.md, encaminha o que falta (sdd-entrevistar, sdd-prd) e, na conclusão, planeja a fatia na sprint e cria a [DEV] (e a [REV] e a [VER] só no HITL, pela senioridade de quem implementa); a sdd-desenvolver começa dali. Use em \"especificar o EP-03\", \"especificar a FT-003\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
+description: "Skill do papel Especificador no fluxo sdd — conduz a especificação de um épico (EP-nn) ou de uma fatia nova (FT-nnn fora da DoR, de épico ou de Manutenção) a partir da tarefa [ESP]: assume a [ESP] no EWM, monta a pasta de trabalho local fora do git (.kiro/local/especificacao/), encaminha pela Fase do status.md do épico (sdd-entrevistar → sdd-prd → GATE do PRD → sdd-fatiar), leva o PRD aprovado para a base, conclui a [ESP] depois do GATE do backlog e, no fim de cada sessão com o cliente, registra o levantamento na [ESP] (comentário + anexos .md) e lança as horas. Outra máquina retoma baixando os anexos. Na fatia nova: cria a branch e o status.md (especificando), encaminha o que falta e, na conclusão, planeja a fatia na sprint e cria a [DEV] (e a [REV] e a [VER] só no HITL); a sdd-desenvolver começa dali. Use em \"especificar o EP-03\", \"especificar a FT-003\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.5"
+  version: "3.5.7"
 ---
 
 # sdd-especificar — Especificação de épico e de fatia nova

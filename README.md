@@ -110,7 +110,7 @@ de `skills/sdd-setup/assets/`:
 | `.kiro/sdd/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
 | pasta do produto (proposta pela setup; padrão `.kiro/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.kiro/local/` (fora do git) |
 
-O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.4) lê o `.kiro/config/sdd/pa_<nome>.json` do projeto (um por
+O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.4) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
 project area, gravado pela `sdd-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
 `elm_ligar`, `elm_publicar_req`…): a skill do passo passa só o caminho do projeto, os ids e o conteúdo, e recebe
 `{"ok": …}`. Regras comuns em [`skills/sdd/references/elm.md`](skills/sdd/references/elm.md). Leituras liberadas nos
@@ -364,6 +364,11 @@ mora, o análogo a imitar, o irmão a ignorar, como subir o ambiente e a massa).
 pergunta antes e passa as **Indicações da pessoa** no pedido (onde olhar, nunca o que concluir); o `research.md`
 registra se o código as confirmou. A regra vive no steering `sdd.md` e nos agentes: rode "atualizar a configuração
 do sdd" e "atualizar os agentes do sdd" nos projetos. Sem mudança no MCP.
+
+Na **3.5.7**, (1) o `pa_<nome>.json` passa a ser gravado em `.kiro/config/elm/` — onde o MCP `elm` o procura —, e não
+mais em `.kiro/config/sdd/`; a `sdd-setup` move os que achar no lugar antigo (rode "atualizar a configuração do sdd"
+ou faça o `git mv` à mão). (2) A descrição da `sdd-especificar` passava de 1024 caracteres e a skill era pulada pelo
+Kiro: encurtada (reinstale o power).
 
 Não use o `/upgrade-agent` (nem `kiro-cli agent upgrade`) nos agentes `sdd-*`: quem os gera é o script da setup
 ("atualizar os agentes do sdd").

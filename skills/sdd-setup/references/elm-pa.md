@@ -35,7 +35,7 @@ transição ou o lançamento de horas. Por isso aqui **não vale "padrão sem pe
   → repita o que entendeu, em tabela, e **pare**: a confirmação é a próxima resposta da pessoa — nunca feche o bloco
   na mesma mensagem em que interpretou; nunca passe ao bloco seguinte com uma pergunta aberta.
 - **Nada é gravado** antes da conferência do bloco 10.
-- **Modo atualização** (já existe `.kiro/config/sdd/pa_<nome>.json`): mostre o `pa` atual em tabela, bloco a bloco,
+- **Modo atualização** (já existe `.kiro/config/elm/pa_<nome>.json`): mostre o `pa` atual em tabela, bloco a bloco,
   e pergunte só o que muda.
 
 ## 0. Credencial e project areas
@@ -179,7 +179,7 @@ Mostre o `pa` inteiro numa tabela legível — PA, time e categoria, cada tipo c
 `por-prefixo`, horas, RM com cada sigla (tipo e pasta), bundle e ETM —, com a origem de cada valor (descoberta, pessoa ou
 fixo), e depois o JSON. O JSON mostrado é **o que será gravado, byte a byte**: monte-o no formato do schema
 (ids da descoberta inclusos — `ccm.id`, `time.id`, `categoria.id`, `tipos.*.id`, `campos` como `nome → qname`) e
-confira contra o [schema](../assets/pa.schema.json) **antes** de mostrar. "ok" → grave `.kiro/config/sdd/pa_<nome>.json` (relativo à raiz, `/`, sem segredos — vai
+confira contra o [schema](../assets/pa.schema.json) **antes** de mostrar. "ok" → grave `.kiro/config/elm/pa_<nome>.json` (relativo à raiz, `/`, sem segredos — vai
 para o git) e confira com `elm_status(projeto)`: `valido` e `faltando` vazio. A validação pediu mudança → mostre o diff do que
 muda e peça "ok" de novo; nunca regrave em silêncio o que a pessoa aprovou.
 

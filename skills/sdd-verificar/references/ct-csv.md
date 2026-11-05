@@ -12,7 +12,7 @@ o MCP `elm`, o arquivo é importado à mão (Importar → CSV) e os links são f
 
 ## Colunas (nesta ordem)
 
-Valores do ELM vêm do `.kiro/config/sdd/pa_<nome>.json` e do `sdd.md`; sem ELM, deixe
+Valores do ELM vêm do `.kiro/config/elm/pa_<nome>.json` e do `sdd.md`; sem ELM, deixe
 vazios os que não souber. A ordem, os nomes e os valores fixos (tipo, status inicial, categoria) vêm da tabela
 linha `CT.csv` da seção ELM do `sdd.md` — o template de importação do ETM do projeto manda.
 

@@ -4,7 +4,7 @@ description: "Guia do fluxo sdd — engenharia agêntica orientada a especifica�
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "3.5.5"
+  version: "3.5.7"
 ---
 
 # sdd — Engenharia agêntica orientada a especificação
@@ -194,7 +194,7 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   ([Gravar na base](../sdd-fatiar/references/backlog.md#gravar-na-base)). Merge só do PR aprovado, pelo **Dev
   responsável** (`gitlab_mesclar_mr`, com confirmação); nunca `--force`.
 - **ELM pelo MCP `elm` do power:** a skill do passo chama a tool (`elm_*`) com `projeto` e os ids; o MCP lê o
-  `.kiro/config/sdd/pa_<nome>.json`. Regras de escrita, pendências e tarefas: [references/elm.md](references/elm.md).
+  `.kiro/config/elm/pa_<nome>.json`. Regras de escrita, pendências e tarefas: [references/elm.md](references/elm.md).
   Sem o MCP ou com falha, a escrita vira `ELM pendente` registrada — o ELM nunca trava o fluxo.
 - **Bundle do ELM e PR, só pelos MCPs do power:** a documentação baixada pela `sdd-sync` (`<rm.download>`) —
   cópia local, em Markdown, dos artefatos do ELM, válida até o último sincronismo (o ELM ao vivo é pelo `elm_buscar_req`/`elm_ler_req`) — é

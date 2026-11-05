@@ -125,7 +125,7 @@ Na worktree do `sdd-loop`: `cd .kiro/local/wt/<ft> && <comando>`. Falha de ambie
 
 | Item | Valor |
 |---|---|
-| Usa ELM | `<sim — .kiro/config/sdd/pa_<nome>.json (padrão; outros: …) | não>` — o MCP `elm` lê o `pa`; regras em `references/elm.md` da skill `sdd`; sem o MCP, a escrita vira `ELM pendente` |
+| Usa ELM | `<sim — .kiro/config/elm/pa_<nome>.json (padrão; outros: …) | não>` — o MCP `elm` lê o `pa`; regras em `references/elm.md` da skill `sdd`; sem o MCP, a escrita vira `ELM pendente` |
 | Publicar requisitos · ET | `<na-aprovacao | no-merge>` · `<não publica | as-built no merge>` (itens do EWM: nascem no backlog do produto do `pa` — `ccm.backlog` — e mudam de iteração ao entrar na sprint) |
 | Manual no DOORS Next | `<change set, módulo, links restringe, baseline | nada>` |
 | Fatia dividida no EWM | `<itens novos como filhos do item original | fecha o original e cria itens novos>` |
