@@ -5,7 +5,7 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "mcp-elk@latest"
+        "mcp-elk@3.0.7"
       ],
       "env": {
         "UV_SYSTEM_CERTS": "true"
@@ -15,7 +15,7 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "mcp-elm@3.6.7"
+        "mcp-elm@3.6.9"
       ],
       "env": {
         "UV_SYSTEM_CERTS": "true"
@@ -25,7 +25,7 @@
       "type": "stdio",
       "command": "uvx",
       "args": [
-        "mcp-gitlabpr@latest"
+        "mcp-gitlabpr@1.0.3"
       ],
       "env": {
         "UV_SYSTEM_CERTS": "true"
